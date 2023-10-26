@@ -22,10 +22,10 @@ class AppTheme{
   static TextTheme textTheme() {
     return TextTheme(
       bodyMedium: GoogleFonts.inter(
-        color: const Color(0xFF000000),
+        color: const Color(0xFFa6a6a7),
       ),
       titleLarge: GoogleFonts.inter(
-        color: const Color(0xFF000000),
+        color: const Color(0xFFa6a6a7),
         fontWeight: FontWeight.w600,
       ),
     );

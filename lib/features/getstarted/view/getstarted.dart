@@ -5,6 +5,14 @@ class GetStartedView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          children: [
+            Text('Manage your Tasks with Task Manager', style: Theme.of(context).textTheme.titleLarge,),
+          ],
+        ),
+      ),
+    );
   }
 }

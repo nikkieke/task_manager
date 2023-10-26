@@ -21,6 +21,7 @@ class _AppState extends ConsumerState<App> {
       splitScreenMode: true,
       builder: (context, child) {
          return MaterialApp.router(
+           debugShowCheckedModeBanner: false,
            title: 'Flutter Demo',
            theme: AppTheme.dark,
            routerConfig: appRouter,
