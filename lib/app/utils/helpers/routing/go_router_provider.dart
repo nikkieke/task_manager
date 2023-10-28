@@ -17,6 +17,16 @@ final goRouterProvider = Provider<GoRouter>((ref){
         name: AppRoute.getStarted.name,
         builder: (context, state) => const GetStartedView(),
       ),
+      GoRoute(
+        path: '/login',
+        name: AppRoute.login.name,
+        builder: (context, state) => const LoginView(),
+      ),
+      GoRoute(
+        path: '/signup',
+        name: AppRoute.signup.name,
+        builder: (context, state) => const SignupView(),
+      ),
 
       GoRoute(
         path: '/home',
@@ -29,5 +39,7 @@ final goRouterProvider = Provider<GoRouter>((ref){
 
 enum AppRoute {
   getStarted,
+  login,
+  signup,
   home,
 }
