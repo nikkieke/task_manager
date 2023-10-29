@@ -27,6 +27,11 @@ final goRouterProvider = Provider<GoRouter>((ref){
         name: AppRoute.signup.name,
         builder: (context, state) => const SignupView(),
       ),
+      GoRoute(
+        path: '/forgotPassword',
+        name: AppRoute.forgotPassword.name,
+        builder: (context, state) => const ForgotPasswordView(),
+      ),
 
       GoRoute(
         path: '/home',
@@ -41,5 +46,6 @@ enum AppRoute {
   getStarted,
   login,
   signup,
+  forgotPassword,
   home,
 }
