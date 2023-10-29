@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -54,8 +55,11 @@ class _SignupFormState extends State<SignupForm> {
               labelText: 'jane doe',
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z ]*$'),),
-                FilteringTextInputFormatter.deny(RegExp('[ ]')),
               ],
+              prefixIcon: IconButton(
+                onPressed: () {  },
+                icon: SvgPicture.asset(AppImage.user, width: 16,),
+              ),
             ),
           ),
           const Space(8),
@@ -78,6 +82,10 @@ class _SignupFormState extends State<SignupForm> {
               inputFormatters: [
                 FilteringTextInputFormatter.deny(RegExp('[ ]')),
               ],
+              prefixIcon: IconButton(
+                onPressed: () {  },
+                icon: SvgPicture.asset(AppImage.userTag, width: 16,),
+              ),
             ),
           ),
           const Space(8),
@@ -96,12 +104,16 @@ class _SignupFormState extends State<SignupForm> {
             child: TextFormInput(
               key: const Key('loginForm_passwordInput_textField'),
               controller: password,
-              obscureText: true,
+              obscureText: obscure,
               labelText: '********',
               inputFormatters: [
                 LengthLimitingTextInputFormatter(8),
                 FilteringTextInputFormatter.deny(RegExp('[ ]')),
               ],
+              prefixIcon: IconButton(
+                onPressed: () {  },
+                icon: SvgPicture.asset(AppImage.lock, width: 16,),
+              ),
               suffixIcon:
               IconButton(
                 onPressed: () {
@@ -110,8 +122,8 @@ class _SignupFormState extends State<SignupForm> {
                   });
                 },
                 icon: obscure
-                    ?SvgPicture.asset(AppImage.eyeSlash)
-                    :SvgPicture.asset(AppImage.eyeSlash),
+                    ?SvgPicture.asset(AppImage.eyeSlash, width: 16,)
+                    :SvgPicture.asset(AppImage.eyeSlash, width: 16,),
                 color: Colors.grey,
                 iconSize: 19,
               ),
@@ -122,6 +134,66 @@ class _SignupFormState extends State<SignupForm> {
                   }
                 }
               },
+            ),
+          ),
+          Space(15.h),
+          TextButton(
+            onPressed: () {
+
+            },
+            style: TextButton.styleFrom(
+              shape: const StadiumBorder(),
+              padding: EdgeInsets.zero,
+              foregroundColor: Theme.of(context).primaryColor,
+            ),
+            child: Center(
+              child: RichText(
+                selectionColor: Theme.of(context).primaryColor,
+                text: TextSpan(
+                  text: 'By clicking ‘Signup’ you agree to',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: ' TaskManager ',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(
+                        fontWeight: FontWeight.w600,),),
+                    TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          //print('Tap Here onTap');
+                        },
+                      text: 'Terms of Use',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w600,),),
+                    TextSpan(
+                      text: ' and ',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(
+                        fontWeight: FontWeight.w600,),),
+                    TextSpan(
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          //print('Tap Here onTap');
+                        },
+                      text: 'Privacy Policy',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(
+                        color: Theme.of(context).primaryColor,
+                        fontWeight: FontWeight.w600,),),
+                  ],
+                ),
+              ),
             ),
           ),
           Space(32.h),
