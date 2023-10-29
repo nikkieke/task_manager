@@ -58,6 +58,10 @@ class _LoginFormState extends State<LoginForm> {
               inputFormatters: [
                 FilteringTextInputFormatter.deny(RegExp('[ ]')),
               ],
+              prefixIcon: IconButton(
+                onPressed: () {  },
+                icon: SvgPicture.asset(AppImage.userTag, width: 16,),
+              ),
             ),
           ),
           const Space(8),
@@ -76,12 +80,16 @@ class _LoginFormState extends State<LoginForm> {
             child: TextFormInput(
               key: const Key('loginForm_passwordInput_textField'),
               controller: password,
-              obscureText: true,
+              obscureText: obscure,
               labelText: '********',
               inputFormatters: [
                 LengthLimitingTextInputFormatter(8),
                 FilteringTextInputFormatter.deny(RegExp('[ ]')),
               ],
+              prefixIcon: IconButton(
+                onPressed: () {  },
+                icon: SvgPicture.asset(AppImage.lock, width: 16,),
+              ),
               suffixIcon:
               IconButton(
                 onPressed: () {
@@ -90,8 +98,8 @@ class _LoginFormState extends State<LoginForm> {
                   });
                 },
                 icon: obscure
-                    ?SvgPicture.asset(AppImage.eyeSlash)
-                    :SvgPicture.asset(AppImage.eyeSlash),
+                    ?SvgPicture.asset(AppImage.eyeSlash, width: 16,)
+                    :SvgPicture.asset(AppImage.eyeSlash, width: 16,),
                 color: Colors.grey,
                 iconSize: 19,
               ),
@@ -109,7 +117,7 @@ class _LoginFormState extends State<LoginForm> {
             children: [
               TextButton(
                 onPressed: () {
-
+                  context.pushNamed(AppRoute.forgotPassword.name);
                 },
                 style: TextButton.styleFrom(
                   foregroundColor: Theme.of(context).primaryColor,
@@ -129,11 +137,12 @@ class _LoginFormState extends State<LoginForm> {
            Space(32.h),
           ElevatedButton(
               onPressed: (){
-                if(_formKey.currentState!.validate()){
-                  if (!currentFocus.hasPrimaryFocus){
-                    currentFocus.unfocus();
-                  }
-                }
+                // if(_formKey.currentState!.validate()){
+                //   if (!currentFocus.hasPrimaryFocus){
+                //     currentFocus.unfocus();
+                //   }
+                // }
+                context.pushNamed(AppRoute.home.name);
               },
               child: Text('Login', style: Theme.of(context).textTheme.bodyMedium,),
           ),
