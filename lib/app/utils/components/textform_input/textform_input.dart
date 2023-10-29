@@ -70,11 +70,7 @@ class TextFormInput extends StatelessWidget {
       inputFormatters: inputFormatters,
       obscureText: obscureText,
       obscuringCharacter: '*',
-      style: Theme.of(context).textTheme.labelSmall?.copyWith(
-        color: Colors.black,
-        fontSize: 16,
-        letterSpacing: 0.5,
-        fontWeight: FontWeight.w500,),
+      style: Theme.of(context).textTheme.bodyMedium,
       textInputAction: TextInputAction.done,
       keyboardType: keyboardType,
       onChanged: onChanged,
@@ -96,8 +92,8 @@ class TextFormInput extends StatelessWidget {
         floatingLabelBehavior: FloatingLabelBehavior.never,
         hintText: labelText,
         hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-          color:  Colors.white38,
-          fontSize: 16,
+          color:  Colors.white24,
+          fontSize: 14,
           letterSpacing: 0,),
         border: InputBorder.none,
       ),
