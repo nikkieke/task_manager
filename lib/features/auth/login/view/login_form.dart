@@ -142,7 +142,7 @@ class _LoginFormState extends State<LoginForm> {
                 //     currentFocus.unfocus();
                 //   }
                 // }
-                context.pushNamed(AppRoute.home.name);
+                context.goNamed(AppRoute.home.name);
               },
               child: Text('Login', style: Theme.of(context).textTheme.bodyMedium,),
           ),
@@ -159,7 +159,19 @@ class _LoginFormState extends State<LoginForm> {
           Space(37.h),
           OutlinedButton(
             onPressed: (){},
-            child: Text('Google', style: Theme.of(context).textTheme.bodyMedium,),),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(AppImage.google,
+                  width: 20,
+                  colorFilter: const ColorFilter.mode(
+                  Color(0xFFa6a6a7),
+                  BlendMode.srcIn,
+                ),),
+                Space(10.w),
+                Text('Google', style: Theme.of(context).textTheme.bodyMedium,),
+              ],
+            ),),
           Space(10.h),
           TextButton(
             onPressed: () {

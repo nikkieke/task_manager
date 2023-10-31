@@ -220,7 +220,19 @@ class _SignupFormState extends State<SignupForm> {
           Space(37.h),
           OutlinedButton(
             onPressed: (){},
-            child: Text('Google', style: Theme.of(context).textTheme.bodyMedium,),),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(AppImage.google,
+                  width: 20,
+                  colorFilter: const ColorFilter.mode(
+                    Color(0xFFa6a6a7),
+                    BlendMode.srcIn,
+                  ),),
+                Space(10.w),
+                Text('Google', style: Theme.of(context).textTheme.bodyMedium,),
+              ],
+            ),),
           Space(10.h),
           TextButton(
             onPressed: () {
