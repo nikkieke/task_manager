@@ -16,8 +16,18 @@ class AppTheme{
       elevatedButtonTheme: elevatedButtonThemeData,
       outlinedButtonTheme: outlinedButtonThemeData,
       textTheme: textTheme(),
+      checkboxTheme: checkboxThemeData(),
 
 
+    );
+  }
+
+  static CheckboxThemeData checkboxThemeData() {
+    return CheckboxThemeData(
+      fillColor: MaterialStateProperty.all(Colors.transparent),
+      overlayColor: MaterialStateProperty.all(Colors.transparent),
+      checkColor: MaterialStateProperty.all(Colors.black),
+      shape:const CircleBorder(),
     );
   }
 
