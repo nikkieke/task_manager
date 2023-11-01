@@ -22,4 +22,12 @@ class AppImage{
   static const avatar5 = 'assets/images/avatar5.png';
   static const avatar6 = 'assets/images/avatar6.png';
   static const avatar7 = 'assets/images/avatar7.png';
+  static const avatar8 = 'assets/images/avatar8.png';
+  static const avatar9 = 'assets/images/avatar9.png';
+  static const avatar10 = 'assets/images/avatar10.png';
+  static const avatar11 = 'assets/images/avatar11.png';
+  static const avatar12 = 'assets/images/avatar12.png';
+  static const avatar13 = 'assets/images/avatar13.png';
+  static const avatar14 = 'assets/images/avatar14.png';
+  static const avatar15 = 'assets/images/avatar15.png';
 }
