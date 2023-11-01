@@ -65,6 +65,17 @@ final goRouterProvider = Provider<GoRouter>((ref){
               pageBuilder: (context, state)=>  NoTransitionPage(
                 child: ChatView(key: state.pageKey,),
               ),
+              routes: [
+                GoRoute(
+                  parentNavigatorKey: _rootNavigation,
+                  path: 'newChat',
+                  name: AppRoute.newChat.name,
+                  pageBuilder: (context, state)=>  NoTransitionPage(
+                    child: NewChatView(key: state.pageKey,),
+                  ),
+                ),
+
+              ],
             ),
             GoRoute(
               path: '/newProject',
@@ -104,4 +115,5 @@ enum AppRoute {
   calendar,
   notifications,
   projectDetails,
+  newChat,
 }
