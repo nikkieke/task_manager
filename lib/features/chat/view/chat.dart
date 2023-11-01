@@ -95,10 +95,9 @@ class _ChatViewState extends State<ChatView> with TickerProviderStateMixin{
                 height: 400.h,
                 child: TabBarView(
                   controller: _tabController,
-                  children: [
-                    const ChatTab(),
-
-                    Container(),
+                  children: const [
+                    ChatTab(),
+                    GroupTab(),
                   ],
                 ),
               ),
@@ -106,16 +105,20 @@ class _ChatViewState extends State<ChatView> with TickerProviderStateMixin{
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  Container(
-                    alignment: Alignment.center,
-                    width: 175.w,
-                    height: 57.h,
-                    decoration: BoxDecoration(color: Theme.of(context).primaryColor,
-                        borderRadius: const BorderRadius.all(Radius.circular(10)),),
-                    child: Text('Start Chat',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),),
+                  TextButton(
+                    onPressed: () {
+                      context.pushNamed(AppRoute.newChat.name);
+                    },
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: 175.w,
+                      height: 57.h,
+                      decoration: BoxDecoration(color: Theme.of(context).primaryColor,
+                          borderRadius: const BorderRadius.all(Radius.circular(10)),),
+                      child: Text('Start Chat',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),),
+                    ),
                   ),
-                  Space(29.w),
                 ],
               ),
 
