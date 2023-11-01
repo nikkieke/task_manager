@@ -83,7 +83,7 @@ class _GetStartedViewState extends State<GetStartedView> {
                 onPressed: (){
                   context.pushNamed(AppRoute.login.name);
                 },
-                child: Text('Get Started', style: Theme.of(context).textTheme.bodyMedium,),
+                child: Text('Get Started', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),),
             ),
           ],
         ),

@@ -144,7 +144,7 @@ class _LoginFormState extends State<LoginForm> {
                 // }
                 context.goNamed(AppRoute.home.name);
               },
-              child: Text('Login', style: Theme.of(context).textTheme.bodyMedium,),
+              child: Text('Login', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),),
           ),
            Space(37.h),
           Row(

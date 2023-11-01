@@ -205,7 +205,7 @@ class _SignupFormState extends State<SignupForm> {
                 }
               }
             },
-            child: Text('Signup', style: Theme.of(context).textTheme.bodyMedium,),
+            child: Text('Signup', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),),
           ),
           Space(37.h),
           Row(
