@@ -9,6 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
 
+  azlistview: ^2.0.0
   cupertino_icons: ^1.0.2
   firebase_core: ^2.20.0
   flutter_screenutil: ^5.7.0
