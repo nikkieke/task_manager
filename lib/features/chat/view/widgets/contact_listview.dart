@@ -14,6 +14,13 @@ class ContactListView extends StatefulWidget {
 
 class _ContactListViewState extends State<ContactListView> {
   @override
+  void initState() {
+    super.initState();
+    setState(() {
+      SuspensionUtil.sortListBySuspensionTag(contacts);
+    });
+  }
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: AzListView(
