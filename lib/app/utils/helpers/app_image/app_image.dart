@@ -15,6 +15,7 @@ class AppImage{
   static const calendarRemove = 'assets/images/calendarremove.svg';
   static const arrowLeft = 'assets/images/arrowleft.svg';
   static const users = 'assets/images/users.svg';
+  static const search = 'assets/images/search.svg';
   static const avatar1 = 'assets/images/avatar1.png';
   static const avatar2 = 'assets/images/avatar2.png';
   static const avatar3 = 'assets/images/avatar3.png';
