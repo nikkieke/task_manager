@@ -55,6 +55,24 @@ final goRouterProvider = Provider<GoRouter>((ref){
                   pageBuilder: (context, state)=>  NoTransitionPage(
                     child: ProjectDetailsView(key: state.pageKey,),
                   ),
+                  routes: [
+                    GoRoute(
+                      parentNavigatorKey: _rootNavigation,
+                      path: 'addTask',
+                      name: AppRoute.addTask.name,
+                      pageBuilder: (context, state)=>  NoTransitionPage(
+                        child: AddTaskView(key: state.pageKey,),
+                      ),
+                    ),
+                  ],
+                ),
+                GoRoute(
+                  parentNavigatorKey: _rootNavigation,
+                  path: 'profile',
+                  name: AppRoute.profile.name,
+                  pageBuilder: (context, state)=>  NoTransitionPage(
+                    child: ProfileView(key: state.pageKey,),
+                  ),
                 ),
 
               ],
@@ -116,4 +134,6 @@ enum AppRoute {
   notifications,
   projectDetails,
   newChat,
+  profile,
+  addTask,
 }
