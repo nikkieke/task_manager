@@ -195,7 +195,9 @@ class _ProjectDetailsViewState extends State<ProjectDetailsView> {
           color: Theme.of(context).scaffoldBackgroundColor,
         ),
         child: ElevatedButton(
-          onPressed: () {  },
+          onPressed: () {
+            context.pushNamed(AppRoute.addTask.name);
+          },
           child: Text('Add Task', style: Theme.of(context).textTheme.bodyMedium,),
         ),
       ),
