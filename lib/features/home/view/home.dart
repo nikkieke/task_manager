@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/home/widgets/widgets.dart';
 
@@ -39,10 +40,15 @@ class _HomeViewState extends State<HomeView> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                      width: 47.w,
-                      height: 48.h,
-                      child: Image.asset(AppImage.avatar1),),
+                   TextButton(
+                       onPressed: (){
+                         context.pushNamed(AppRoute.profile.name);
+                       },
+                       child: SizedBox(
+                         width: 47.w,
+                         height: 48.h,
+                         child: Image.asset(AppImage.avatar1),),
+                   ),
                 ],
               ),
               Space(36.h),
