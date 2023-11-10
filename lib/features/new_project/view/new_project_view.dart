@@ -186,7 +186,7 @@ class _NewProjectViewState extends State<NewProjectView> {
                   ),
                 ],
               ),
-              Space(115.h),
+              Space(80.h),
               ElevatedButton(
                   onPressed: (){},
                   child: Text(
