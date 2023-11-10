@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/home/widgets/widgets.dart';
 
@@ -97,12 +96,7 @@ class CompletedProjectsCard extends StatelessWidget {
               ],
             ),
             Space(2.h),
-            LinearPercentIndicator(
-              padding: EdgeInsets.zero,
-              percent: 1,
-              progressColor: Colors.white,
-              barRadius: const Radius.circular(2),
-            ),
+            const LineIndicator(percent: 1,),
           ],
         ),
       ),

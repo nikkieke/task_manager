@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/home/widgets/widgets.dart';
 
@@ -150,17 +149,7 @@ class _ProjectDetailsViewState extends State<ProjectDetailsView> {
                     Text('Project Progress', style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontSize: 18.sp,
                     ),),
-                    CircularPercentIndicator(
-                      radius: 29.5,
-                      lineWidth: 2,
-                      progressColor: Theme.of(context).primaryColor,
-                      percent: 0.60,
-                      center: Text(
-                        '60%',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontSize: 13.sp,),
-                      ),
-                    ),
+                    const CircleIndicator(percent: 0.60,),
                   ],
                 ),
                 Space(10.h),

@@ -2,7 +2,7 @@ import 'package:task_manager/app/app.dart';
 
 class OngoingProjects{
   OngoingProjects({required this.title, required this.dueDate,
-    required this.percentCompleted, required this.teamAvatars,required this.percent});
+    required this.percentCompleted, required this.teamAvatars,required this.percent,});
 
   final String title;
   final List<String>teamAvatars;

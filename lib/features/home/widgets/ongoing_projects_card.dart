@@ -77,17 +77,7 @@ class OngoingProjectsCard extends StatelessWidget {
                     ),
                   ],
                 ),
-                CircularPercentIndicator(
-                  radius: 29.5,
-                  lineWidth: 2,
-                  progressColor: Theme.of(context).primaryColor,
-                  percent: model.percent,
-                  center: Text(
-                    model.percentCompleted,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      fontSize: 13.sp,),
-                  ),
-                ),
+                CircleIndicator(percent: model.percent,),
               ],
             ),
           ],
