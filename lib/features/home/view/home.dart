@@ -89,19 +89,23 @@ class _HomeViewState extends State<HomeView> {
               SizedBox(
                 width: double.maxFinite,
                 height: 175.h,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(
-                        parent: BouncingScrollPhysics(),),
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(
+                    parent: BouncingScrollPhysics(),),
                     scrollDirection: Axis.horizontal,
-                    itemCount: cP.length,
-                    itemBuilder: (context, index){
-                      final completedProject = cP[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 10),
-                          child: CompletedProjectsCard(model: completedProject,),);
-
-                    },
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                          (context, index){
+                            final completedProject = cP[index];
+                            return Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: CompletedProjectsCard(model: completedProject,),);
+                          },
+                        childCount:  cP.length,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Space(25.h),
@@ -127,18 +131,24 @@ class _HomeViewState extends State<HomeView> {
                 ],
               ),
               Expanded(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const AlwaysScrollableScrollPhysics(
+                child: CustomScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(
                     parent: BouncingScrollPhysics(),),
-                    itemCount: oP.length,
-                    itemBuilder: (context, index){
-                      final ongoingProject = oP[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: OngoingProjectsCard(model: ongoingProject,),
-                      );
-                    },),
+                  slivers: [
+                    SliverList(
+                      delegate: SliverChildBuilderDelegate(
+                            (context, index){
+                              final ongoingProject = oP[index];
+                          return Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: OngoingProjectsCard(model: ongoingProject,),
+                                  );
+                        },
+                        childCount:  oP.length,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
