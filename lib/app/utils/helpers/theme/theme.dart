@@ -13,6 +13,7 @@ class AppTheme{
       useMaterial3: true,
       primaryColor: const Color(0xffb42c3a),
       scaffoldBackgroundColor: const Color(0xff141718),
+      splashColor: const Color(0xff141718),
       elevatedButtonTheme: elevatedButtonThemeData,
       outlinedButtonTheme: outlinedButtonThemeData,
       textTheme: textTheme(),
