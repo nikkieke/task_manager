@@ -50,6 +50,7 @@ class ProfileView extends StatelessWidget {
                       bottom: 0,
                       right: 0,
                       child: FloatingActionButton.small(
+                        heroTag: null,
                         onPressed: () {},
                         backgroundColor: const Color(0xff1b1b1b),
                         shape: const CircleBorder(),
