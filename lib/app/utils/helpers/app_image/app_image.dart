@@ -32,6 +32,7 @@ class AppImage{
   static const userAdd = 'assets/images/useradd.svg';
   static const userTagLinear = 'assets/images/usertaglinear.svg';
   static const arrowDown = 'assets/images/arrowdown.svg';
+  static const plane = 'assets/images/plane.png';
   static const avatar1 = 'assets/images/avatar1.png';
   static const avatar2 = 'assets/images/avatar2.png';
   static const avatar3 = 'assets/images/avatar3.png';
