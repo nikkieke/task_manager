@@ -6,11 +6,18 @@ import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/calendar/view/widgets/widgets.dart';
 
 
-class CalendarView extends StatelessWidget {
+class CalendarView extends StatefulWidget {
   const CalendarView({super.key});
 
   @override
+  State<CalendarView> createState() => _CalendarViewState();
+}
+
+class _CalendarViewState extends State<CalendarView> {
+
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SafeArea(
           child: Padding(
@@ -58,18 +65,21 @@ class CalendarView extends StatelessWidget {
                 ),
                 Space(26.h),
                 Expanded(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const AlwaysScrollableScrollPhysics(
-                        parent: BouncingScrollPhysics(),),
-                      itemCount: todayTasks.length,
-                      itemBuilder: (context, index){
-                        final task = todayTasks[index];
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 15),
-                          child: TaskCard(model: task),
-                        );
-                      },
+                  child: PullIndicator(
+
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const AlwaysScrollableScrollPhysics(
+                          parent: BouncingScrollPhysics(),),
+                        itemCount: todayTasks.length,
+                        itemBuilder: (context, index){
+                          final task = todayTasks[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: TaskCard(model: task),
+                          );
+                        },
+                    ),
                   ),
                 ),
 
