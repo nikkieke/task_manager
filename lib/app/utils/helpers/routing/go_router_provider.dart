@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/features.dart';
-import 'package:task_manager/features/notifications/notifications.dart';
+
 
 final GlobalKey<NavigatorState> _rootNavigation = GlobalKey(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellNavigation = GlobalKey(debugLabel: 'shell');
 
 final goRouterProvider = Provider<GoRouter>((ref){
+  final analytics = ref.watch(analyticsProvider);
   return GoRouter(
     initialLocation: '/',
     navigatorKey: _rootNavigation,
     debugLogDiagnostics: true,
     restorationScopeId: 'app',
+    observers: [
+      analytics.getAnalyticsObserver(),
+    ],
     routes: [
       GoRoute(
         path: '/',
