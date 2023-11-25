@@ -17,10 +17,12 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
+  final String errorText = '';
 
   bool obscure = true;
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,14 @@ class _LoginFormState extends State<LoginForm> {
               color: Colors.white,
             ),
           ),
-           Space(24.h),
+          Text(
+            errorText,
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+           Space(34.h),
           Text(
             'Email Address',
             style: Theme.of(context).textTheme.bodyMedium,
@@ -157,21 +166,7 @@ class _LoginFormState extends State<LoginForm> {
             ],
           ),
           Space(37.h),
-          OutlinedButton(
-            onPressed: (){},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(AppImage.google,
-                  width: 20,
-                  colorFilter: const ColorFilter.mode(
-                  Color(0xFFa6a6a7),
-                  BlendMode.srcIn,
-                ),),
-                Space(10.w),
-                Text('Google', style: Theme.of(context).textTheme.bodyMedium,),
-              ],
-            ),),
+          const AuthOptionButton(loading: false,),
           Space(10.h),
           TextButton(
             onPressed: () {
