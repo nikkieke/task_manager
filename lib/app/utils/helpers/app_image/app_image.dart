@@ -12,6 +12,7 @@ class AppImage{
   static const calendar = 'assets/images/calendar.svg';
   static const addSquare = 'assets/images/addsquare.svg';
   static const google = 'assets/images/google.svg';
+  static const apple = 'assets/images/apple.svg';
   static const edit = 'assets/images/edit.svg';
   static const calendarRemove = 'assets/images/calendarremove.svg';
   static const arrowLeft = 'assets/images/arrowleft.svg';
