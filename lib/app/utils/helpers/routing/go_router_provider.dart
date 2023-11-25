@@ -5,14 +5,14 @@ import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/features.dart';
 
 
-final GlobalKey<NavigatorState> _rootNavigation = GlobalKey(debugLabel: 'root');
+final GlobalKey<NavigatorState> rootNavigation = GlobalKey(debugLabel: 'root');
 final GlobalKey<NavigatorState> _shellNavigation = GlobalKey(debugLabel: 'shell');
 
 final goRouterProvider = Provider<GoRouter>((ref){
   final analytics = ref.watch(analyticsProvider);
   return GoRouter(
     initialLocation: '/',
-    navigatorKey: _rootNavigation,
+    navigatorKey: rootNavigation,
     debugLogDiagnostics: true,
     restorationScopeId: 'app',
     observers: [
@@ -42,7 +42,7 @@ final goRouterProvider = Provider<GoRouter>((ref){
 
       ShellRoute(
         navigatorKey: _shellNavigation,
-        parentNavigatorKey: _rootNavigation,
+        parentNavigatorKey: rootNavigation,
         restorationScopeId: 'app',
         builder: (context, state, child)=> MainScreen(key: state.pageKey,child: child,),
           routes: [
@@ -54,7 +54,7 @@ final goRouterProvider = Provider<GoRouter>((ref){
               ),
               routes: [
                 GoRoute(
-                  parentNavigatorKey: _rootNavigation,
+                  parentNavigatorKey: rootNavigation,
                   path: 'projectDetails',
                   name: AppRoute.projectDetails.name,
                   pageBuilder: (context, state)=>  NoTransitionPage(
@@ -62,7 +62,7 @@ final goRouterProvider = Provider<GoRouter>((ref){
                   ),
                   routes: [
                     GoRoute(
-                      parentNavigatorKey: _rootNavigation,
+                      parentNavigatorKey: rootNavigation,
                       path: 'addTask',
                       name: AppRoute.addTask.name,
                       pageBuilder: (context, state)=>  NoTransitionPage(
@@ -72,7 +72,7 @@ final goRouterProvider = Provider<GoRouter>((ref){
                   ],
                 ),
                 GoRoute(
-                  parentNavigatorKey: _rootNavigation,
+                  parentNavigatorKey: rootNavigation,
                   path: 'profile',
                   name: AppRoute.profile.name,
                   pageBuilder: (context, state)=>  NoTransitionPage(
@@ -90,7 +90,7 @@ final goRouterProvider = Provider<GoRouter>((ref){
               ),
               routes: [
                 GoRoute(
-                  parentNavigatorKey: _rootNavigation,
+                  parentNavigatorKey: rootNavigation,
                   path: 'newChat',
                   name: AppRoute.newChat.name,
                   pageBuilder: (context, state)=>  NoTransitionPage(
