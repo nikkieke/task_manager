@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "936103878318",
-    "project_id": "taskmanager-eb204",
-    "storage_bucket": "taskmanager-eb204.appspot.com"
+    "project_number": "1026837917599",
+    "project_id": "taskmanager-ced81",
+    "storage_bucket": "taskmanager-ced81.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:936103878318:android:c6f661f6732f497170973f",
+        "mobilesdk_app_id": "1:1026837917599:android:9467173da226a38a3217aa",
         "android_client_info": {
-          "package_name": "com.example.task_manager"
+          "package_name": "com.softhon.taskManager"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDVuhOSn7U2Z4olQL6iWxInMwKd2mAfgyw"
+          "current_key": "AIzaSyBRNVoQhXLte1E8rNuZj5GVyRKSIho1vPc"
         }
       ],
       "services": {
