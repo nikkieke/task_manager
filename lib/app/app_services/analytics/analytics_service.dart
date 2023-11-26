@@ -17,7 +17,7 @@ class Analytics{
     try{
       await _analytics.logEvent(name: action, parameters: parameter);
     }catch (e){
-      basicPrint(e);
+      BaseUtils.basicPrint(e);
     }
   }
 
@@ -25,7 +25,7 @@ class Analytics{
     try{
       await _analytics.setCurrentScreen(screenName: screenName);
     }catch (e){
-      basicPrint(e);
+      BaseUtils.basicPrint(e);
     }
   }
 }
