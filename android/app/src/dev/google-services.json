@@ -7,17 +7,17 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:936103878318:android:c6f661f6732f497170973f",
+        "mobilesdk_app_id": "1:936103878318:android:c45abbc63554db7270973f",
         "android_client_info": {
-          "package_name": "com.example.task_manager"
+          "package_name": "com.softhon.taskManager"
         }
       },
       "oauth_client": [
         {
-          "client_id": "936103878318-9iv0vhg7vpqdo7iti7g2bccvkhqo33pd.apps.googleusercontent.com",
+          "client_id": "936103878318-20padl9dna13hlvhcdomoi1ho30g52cs.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.task_manager",
+            "package_name": "com.softhon.taskManager",
             "certificate_hash": "f24ff5e9ae560c3745c65968e2913556c64c8c86"
           }
         },
@@ -51,9 +51,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:936103878318:android:c45abbc63554db7270973f",
+        "mobilesdk_app_id": "1:936103878318:android:ec3e76ef80cb99b070973f",
         "android_client_info": {
-          "package_name": "com.softhon.taskManager"
+          "package_name": "com.softhon.taskManager.dev"
         }
       },
       "oauth_client": [

@@ -24,7 +24,7 @@ if (flutterVersionName == null) {
 }
 
 android {
-    namespace "com.example.task_manager"
+    namespace "com.softhon.task_manager"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
@@ -62,12 +62,13 @@ android {
 
         prod {
             dimension "app"
-            applicationIdSuffix ".taskmanager"
+            versionNameSuffix "-prod"
         }
 
         dev {
             dimension "app"
-            applicationIdSuffix ".taskmanagerDev"
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
         }
 
 

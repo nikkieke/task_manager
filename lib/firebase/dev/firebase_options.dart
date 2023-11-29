@@ -58,7 +58,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDVuhOSn7U2Z4olQL6iWxInMwKd2mAfgyw',
-    appId: '1:936103878318:android:c45abbc63554db7270973f',
+    appId: '1:936103878318:android:ec3e76ef80cb99b070973f',
     messagingSenderId: '936103878318',
     projectId: 'taskmanager-eb204',
     storageBucket: 'taskmanager-eb204.appspot.com',
@@ -66,12 +66,12 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyA9lSrUTPrs1I5lZSA074xrf0o8TeimvDo',
-    appId: '1:936103878318:ios:a44478318f473a2b70973f',
+    appId: '1:936103878318:ios:64f711edf479692370973f',
     messagingSenderId: '936103878318',
     projectId: 'taskmanager-eb204',
     storageBucket: 'taskmanager-eb204.appspot.com',
-    androidClientId: '936103878318-9iv0vhg7vpqdo7iti7g2bccvkhqo33pd.apps.googleusercontent.com',
-    iosClientId: '936103878318-t5gfrb7j13j33au9r0mg1bv9s8an6k18.apps.googleusercontent.com',
-    iosBundleId: 'com.softhon.taskManager',
+    androidClientId: '936103878318-20padl9dna13hlvhcdomoi1ho30g52cs.apps.googleusercontent.com',
+    iosClientId: '936103878318-9odgq8ufmptjhpt81f4q5j7lusk052g2.apps.googleusercontent.com',
+    iosBundleId: 'com.softhon.taskManager.dev',
   );
 }
