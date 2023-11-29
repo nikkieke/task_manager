@@ -1,4 +1,3 @@
-
 import 'package:task_manager/app/app.dart';
 
 enum Flavor{dev, prod}
