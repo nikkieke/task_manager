@@ -3,19 +3,20 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:task_manager/app/app.dart';
 
 
-class LoginForm extends StatefulWidget {
+class LoginForm extends ConsumerStatefulWidget {
   const LoginForm({
     super.key,
   });
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  ConsumerState<LoginForm> createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _LoginFormState extends ConsumerState<LoginForm> {
   final _formKey = GlobalKey<FormState>();
   final String errorText = '';
 
@@ -146,6 +147,7 @@ class _LoginFormState extends State<LoginForm> {
            Space(32.h),
           ElevatedButton(
               onPressed: (){
+                //ref.read(connectionProvider);
                 // if(_formKey.currentState!.validate()){
                 //   if (!currentFocus.hasPrimaryFocus){
                 //     currentFocus.unfocus();
