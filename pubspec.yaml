@@ -14,6 +14,8 @@ dependencies:
   cloud_firestore: ^4.13.2
   cupertino_icons: ^1.0.2
   custom_refresh_indicator: ^3.0.0
+  either_dart: ^1.0.0
+  equatable: ^2.0.5
   flash: ^3.0.5+2
   fluttertoast: ^8.2.4
   firebase_core: ^2.20.0
