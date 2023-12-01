@@ -1,0 +1,59 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch Dev",
+            "request": "launch",
+            "flutterMode": "debug",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                //"--web-port",
+                //"3000",
+                "--flavor",
+                "dev",
+                //"--dart-define",
+                //"prembleApiKey=sandbox_sk_km8dGI2tUeAWUKfd6wTDFb0qI4DD1VdummDyRNM"
+            ]
+        },
+        {
+            "name": "Launch Dev(Profile)",
+            "request": "launch",
+            "flutterMode": "profile",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                //"--web-port",
+                //"3000",
+                "--flavor",
+                "dev",
+            ]
+        },
+        {
+            "name": "Launch e2e (test)",
+            "request": "launch",
+            "type": "dart",
+            "program": "integration_test/app_test.dart"
+        },
+        {
+            "name": "Launch Widget (test)",
+            "request": "launch",
+            "type": "dart",
+        },
+        {
+            "name": "Launch Prod",
+            "request": "launch",
+            "flutterMode": "debug",
+            "type": "dart",
+            "program": "lib/main_prod.dart",
+            "args": [
+                //"--web-port",
+                //"3000",
+                "--flavor",
+                "prod",
+                //"--dart-define",
+                //"prembleApiKey=asdasdasd"
+            ]
+        },
+    ]
+}
