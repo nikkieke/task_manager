@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/features.dart';
-import 'package:task_manager/features/notifications/notifications.dart';
 
 final routeStateProvider = ChangeNotifierProvider((ref) {
   return PersistentTabController();
@@ -190,7 +189,7 @@ class PersistentTabController extends ChangeNotifier {
           'check that initialIndex is not less than zero',
         );
 
-  bool _isDisposed = false;
+  //bool _isDisposed = false;
   int get index => _index;
   int _index;
 
@@ -206,7 +205,7 @@ class PersistentTabController extends ChangeNotifier {
   @mustCallSuper
   @override
   void dispose() {
-    _isDisposed = true;
+    //_isDisposed = true;
     super.dispose();
   }
 }
