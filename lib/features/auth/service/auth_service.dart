@@ -1,6 +1,10 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:either_dart/either.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:task_manager/features/auth/auth.dart';
+import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 
 class AuthService{
   AuthService._();
@@ -109,6 +113,84 @@ Future<void> deleteCurrentFirebaseUser()async{
   }
 }
 
+Stream<User?> authStateChanges(){
+  return firebaseAuth.authStateChanges();
+}
+
+Future<Either<ErrorHandler, Map<String, dynamic>>> signinWithGoogle()async{
+  try{
+    final googleSignIn = GoogleSignIn();
+
+    final googleSignInAccount = await googleSignIn.signIn();
+
+    if(googleSignInAccount != null){
+      final googleSignInAuthentication = await googleSignInAccount.authentication;
+
+      final authCredential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      final userCredential = await firebaseAuth.signInWithCredential(authCredential);
+      return Right({
+          'credential': userCredential,
+          'userData': {
+            'displayName': userCredential.user!.displayName,
+            'email': userCredential.user!.email,
+            'photoUrl': userCredential.user!.photoURL,
+            'uid': userCredential.user!.uid,
+
+          },
+        }
+      );
+
+    }else{
+      return const Left(ErrorHandler('Error signing in!'),);
+    }
+
+  }on FirebaseAuthException catch(e){
+    return Left(ErrorHandler(e.message?? '', code: e.code));
+  }
+
+}
+
+Future<Either<ErrorHandler, Map<String, dynamic>>>signInWithApple()async{
+  //List of things to do on xcode
+  //add updated GoogleService-info.plist file
+  //enable apple signin in the signing and capabilites section
+
+  final authResponse = await TheAppleSignIn.performRequests(
+    [const AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])],
+  );
+
+  switch (authResponse.status){
+    case AuthorizationStatus.authorized:
+      final AppleIdCredential = authResponse.credential!;
+      final oAuthCredential = OAuthProvider('apple.com');
+      final credential = oAuthCredential.credential(
+        idToken: String.fromCharCodes(AppleIdCredential.identityToken!),);
+      final userCredential = await firebaseAuth.signInWithCredential(credential);
+      return Right({
+        'credential': userCredential,
+        'userData':{
+          'displayName': userCredential.user!.displayName,
+          'email': userCredential.user!.email,
+          'photoUrl': userCredential.user!.photoURL,
+          'uid': userCredential.user!.uid,
+        },
+      });
+      case AuthorizationStatus.error:
+        return const Left(
+          ErrorHandler('Error signing in!'),
+        );
+      case AuthorizationStatus.cancelled:    
+        return const Left(
+          ErrorHandler('Action Cancelled by user'),
+        );
+  }
+
+
+}
 
 
 }
