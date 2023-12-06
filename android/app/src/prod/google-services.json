@@ -12,7 +12,12 @@
           "package_name": "com.softhon.taskManager"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1026837917599-fbr8d5sgdn3cg7b5qc7tqc7otrsjodum.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBRNVoQhXLte1E8rNuZj5GVyRKSIho1vPc"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1026837917599-fbr8d5sgdn3cg7b5qc7tqc7otrsjodum.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1026837917599-d0kk9onreu4apu6g4pmt6u7tj8ll83pl.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.softhon.taskManager"
+              }
+            }
+          ]
         }
       }
     }
