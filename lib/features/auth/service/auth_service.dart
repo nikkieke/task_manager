@@ -189,7 +189,10 @@ Future<Either<ErrorHandler, Map<String, dynamic>>>signInWithApple()async{
         );
   }
 
+}
 
+Future<void> sendEmailVerification()async{
+  
 }
 
 
