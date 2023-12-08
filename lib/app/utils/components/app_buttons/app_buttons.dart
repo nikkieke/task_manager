@@ -7,18 +7,22 @@ import 'package:task_manager/app/app.dart';
 
 class AuthOptionButton extends StatelessWidget {
   const AuthOptionButton({
+    required this.googlePressed,
+    required this.applePressed,
     required this.loading, super.key,
   });
 
   final bool loading;
+  final VoidCallback applePressed;
+  final VoidCallback googlePressed;
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
-      onPressed: (){},
+    return Platform.isIOS?
+    OutlinedButton(
+      onPressed: applePressed,
       child: loading?
       const LoadingIndicator(color: Colors.white,):
-      Platform.isIOS?
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -31,20 +35,25 @@ class AuthOptionButton extends StatelessWidget {
           Space(10.w),
           Text('Apple', style: Theme.of(context).textTheme.bodyMedium,),
         ],
-      ):
-      Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SvgPicture.asset(AppImage.google,
-            width: 20,
-            colorFilter: const ColorFilter.mode(
-              Color(0xFFa6a6a7),
-              BlendMode.srcIn,
-            ),),
-          Space(10.w),
-          Text('Google', style: Theme.of(context).textTheme.bodyMedium,),
-        ],
       ),
-    );
+    ):
+      OutlinedButton(
+        onPressed: googlePressed,
+        child: loading?
+        const LoadingIndicator(color: Colors.white,):
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SvgPicture.asset(AppImage.google,
+              width: 20,
+              colorFilter: const ColorFilter.mode(
+                Color(0xFFa6a6a7),
+                BlendMode.srcIn,
+              ),),
+            Space(10.w),
+            Text('Google', style: Theme.of(context).textTheme.bodyMedium,),
+          ],
+            ),
+      );
   }
 }
