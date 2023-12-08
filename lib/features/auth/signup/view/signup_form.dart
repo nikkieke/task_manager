@@ -218,7 +218,7 @@ class _SignupFormState extends State<SignupForm> {
             ],
           ),
           Space(37.h),
-          const AuthOptionButton(loading: false,),
+          AuthOptionButton(loading: false, googlePressed: () {  }, applePressed: () {  },),
           Space(10.h),
           TextButton(
             onPressed: () {

@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:task_manager/app/app.dart';
+import 'package:task_manager/features/auth/auth.dart';
 
 
 class LoginForm extends ConsumerStatefulWidget {
@@ -168,7 +169,11 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             ],
           ),
           Space(37.h),
-          const AuthOptionButton(loading: false,),
+          AuthOptionButton(
+            loading: false,
+            googlePressed: () {  },
+            applePressed: () {AuthService.instance.signInWithApple();  },
+          ),
           Space(10.h),
           TextButton(
             onPressed: () {
