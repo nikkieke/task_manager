@@ -192,7 +192,7 @@ Future<Either<ErrorHandler, Map<String, dynamic>>>signInWithApple()async{
 }
 
 Future<void> sendEmailVerification()async{
-  
+  //add deep linking implementation and then add verifyemail function
 }
 
 
