@@ -22,7 +22,7 @@ class OngoingProjectsCard extends StatelessWidget {
         }
       },
       child: Container(
-        height: 125.h,
+        //height: 125.h,
         width: 384.w,
         padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
         decoration: const BoxDecoration(

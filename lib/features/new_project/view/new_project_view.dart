@@ -186,7 +186,7 @@ class _NewProjectViewState extends State<NewProjectView> {
                   ),
                 ],
               ),
-              Space(80.h),
+              const Spacer(),
               ElevatedButton(
                   onPressed: (){},
                   child: Text(
@@ -194,6 +194,7 @@ class _NewProjectViewState extends State<NewProjectView> {
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),
                   ),
               ),
+              const Space(10),
             ],
           ),
         ),
