@@ -23,7 +23,7 @@ class CompletedProjectsCard extends StatelessWidget {
       child: Container(
         height: 175.h,
         width: 183.w,
-        padding: const EdgeInsets.only(left: 10, right: 8, top: 5),
+        padding:  EdgeInsets.only(left: 10.r, right: 8.r, top: 5.r),
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
           borderRadius: const BorderRadius.all(Radius.circular(10)),
@@ -35,7 +35,7 @@ class CompletedProjectsCard extends StatelessWidget {
               style: Theme.of(context)
                   .textTheme
                   .titleLarge
-                  ?.copyWith(color: Colors.white),
+                  ?.copyWith(color: Colors.white, fontSize: 23.sp),
             ),
             Row(
               children: [

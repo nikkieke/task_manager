@@ -111,22 +111,24 @@ class _NewProjectViewState extends State<NewProjectView> {
                     ),
                   ),
                   Space(10.w),
-                  TextButton(
-                    onPressed: () {  },
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      height: 41.h,
-                      width: 41.w,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      ),
-                      child: SvgPicture.asset(
-                        AppImage.addSquare,
-                        width: 20,
-                        colorFilter: const ColorFilter.mode(
-                          Colors.black,
-                          BlendMode.srcIn,
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {  },
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        height: 41.h,
+                        width: 41.w,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).primaryColor,
+                          borderRadius: const BorderRadius.all(Radius.circular(5)),
+                        ),
+                        child: SvgPicture.asset(
+                          AppImage.addSquare,
+                          width: 20,
+                          colorFilter: const ColorFilter.mode(
+                            Colors.black,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
                     ),
@@ -151,7 +153,7 @@ class _NewProjectViewState extends State<NewProjectView> {
                 children: [
                   Container(
                     alignment: Alignment.center,
-                    padding: const EdgeInsets.only(left: 19),
+                    padding:  EdgeInsets.only(left: 19.r),
                     width: 150.w,
                     height: 48.h,
                     decoration: const BoxDecoration(
