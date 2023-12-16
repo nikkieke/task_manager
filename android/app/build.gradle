@@ -51,7 +51,7 @@ android {
 
     defaultConfig {
         applicationId "com.softhon.taskManager"
-        minSdkVersion 31
+        minSdkVersion 25
         targetSdkVersion 31
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
