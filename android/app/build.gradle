@@ -87,7 +87,7 @@ android {
             dimension "app"
             versionNameSuffix "-prod"
         }
-
+g
         dev {
             dimension "app"
             applicationIdSuffix ".dev"
