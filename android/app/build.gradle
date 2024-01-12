@@ -51,10 +51,15 @@ android {
 
     defaultConfig {
         applicationId "com.softhon.taskManager"
-        minSdkVersion 31
-        targetSdkVersion 31
+        minSdkVersion 25
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        ndk {
+            // Specifies the ABI configurations of your native
+            // libraries Gradle should build and package your APK.
+            abiFilters 'armeabi-v7a'
+        }
     }
 
     signingConfigs {
@@ -67,6 +72,9 @@ android {
    }
    buildTypes {
        release {
+           minifyEnabled true
+           shrinkResources true
+           proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
            signingConfig signingConfigs.release
        }
    }
@@ -88,6 +96,7 @@ android {
 
 
     }
+
 }
 
 flutter {
