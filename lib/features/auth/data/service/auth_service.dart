@@ -23,7 +23,13 @@ class AuthService{
     return currentFirebaseUser?.uid;
   }
 
-  Future<Either<ErrorHandler, SuccessHandler<User>>> login(String email, String password)async{
+  Stream<User?> authStateChanges(){
+    return firebaseAuth.authStateChanges();
+  }
+
+
+
+  Future<Either<ErrorHandler, SuccessHandler<User>>> signIn(String email, String password)async{
       try{
         /// using the signInWithEmailAndPassword method to get the signin response
             final authResult = await firebaseAuth.signInWithEmailAndPassword(
@@ -70,7 +76,7 @@ Future<Either<ErrorHandler, SuccessHandler<User>>> changePassword(
   String email, String oldPw, String newPw,
 )async{
   try{
-    final logIn = await login(email, oldPw);
+    final logIn = await signIn(email, oldPw);
     if(logIn.isRight){
       final user = logIn.right.data;
       await user.updatePassword(newPw);
@@ -113,11 +119,8 @@ Future<void> deleteCurrentFirebaseUser()async{
   }
 }
 
-Stream<User?> authStateChanges(){
-  return firebaseAuth.authStateChanges();
-}
 
-Future<Either<ErrorHandler, Map<String, dynamic>>> signinWithGoogle()async{
+Future<Either<ErrorHandler, Map<String, dynamic>>> signInWithGoogle()async{
   try{
     final googleSignIn = GoogleSignIn();
 
@@ -155,9 +158,6 @@ Future<Either<ErrorHandler, Map<String, dynamic>>> signinWithGoogle()async{
 }
 
 Future<Either<ErrorHandler, Map<String, dynamic>>>signInWithApple()async{
-  //List of things to do on xcode
-  //add updated GoogleService-info.plist file
-  //enable apple signin in the signing and capabilites section
 
   final authResponse = await TheAppleSignIn.performRequests(
     [const AppleIdRequest(requestedScopes: [Scope.email, Scope.fullName])],
