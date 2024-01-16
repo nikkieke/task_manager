@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 import 'package:task_manager/app/app.dart';
-import 'package:task_manager/features/home/presentation/widgets/widgets.dart';
+import 'package:task_manager/features/features.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
