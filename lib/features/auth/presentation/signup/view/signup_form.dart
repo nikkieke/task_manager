@@ -4,25 +4,57 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:task_manager/app/app.dart';
+import 'package:task_manager/features/auth/auth.dart';
 
-class SignupForm extends StatefulWidget {
+class SignupForm extends ConsumerStatefulWidget {
   const SignupForm({super.key});
 
   @override
-  State<SignupForm> createState() => _SignupFormState();
+  ConsumerState<SignupForm> createState() => _SignupFormState();
 }
 
-class _SignupFormState extends State<SignupForm> {
+class _SignupFormState extends ConsumerState<SignupForm> {
   final _formKey = GlobalKey<FormState>();
 
   bool obscure = true;
   final TextEditingController fullName = TextEditingController();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
+
+  @override
+  void dispose() {
+    fullName.dispose();
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
+  void handleSignUp(){
+    ref.read(signUpProvider.notifier).signUp(email.text,
+        password.text, fullName.text,);
+  }
   @override
   Widget build(BuildContext context) {
     final currentFocus = FocusScope.of(context);
+
+    //listen for errors
+    ref.listen<AsyncValue<void>>(
+        signUpProvider, (_, state) {
+          return state.whenOrNull(
+            error: (error, stackTrace){
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('$error')),
+              );
+            },
+          );
+    });
+
+    //loading state
+    final signUpState = ref.watch(signUpProvider);
+    final isLoading = signUpState is AsyncLoading<void>;
+
+
     return Form(
       key: _formKey,
       child: Column(
@@ -53,6 +85,8 @@ class _SignupFormState extends State<SignupForm> {
               keyboardType:TextInputType.name,
               controller: fullName,
               labelText: 'jane doe',
+              validator: validateName,
+              errorText: 'Input your name correctly',
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z ]*$'),),
               ],
@@ -79,6 +113,7 @@ class _SignupFormState extends State<SignupForm> {
               keyboardType:TextInputType.name,
               controller: email,
               labelText: 'janedoe@gmail.com',
+              validator: validateEmail,
               inputFormatters: [
                 FilteringTextInputFormatter.deny(RegExp('[ ]')),
               ],
@@ -106,6 +141,7 @@ class _SignupFormState extends State<SignupForm> {
               controller: password,
               obscureText: obscure,
               labelText: '********',
+              validator: validatePassword,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(8),
                 FilteringTextInputFormatter.deny(RegExp('[ ]')),
@@ -197,16 +233,19 @@ class _SignupFormState extends State<SignupForm> {
             ),
           ),
           Space(32.h),
-          ElevatedButton(
-            onPressed: (){
-              if(_formKey.currentState!.validate()){
-                if (!currentFocus.hasPrimaryFocus){
-                  currentFocus.unfocus();
+          MainButton(
+              loading: isLoading,
+              text: 'Signup',
+              pressed: (){
+                if(_formKey.currentState!.validate()){
+                  if (!currentFocus.hasPrimaryFocus){
+                    currentFocus.unfocus();
+                    handleSignUp();
+                  }
                 }
-              }
-            },
-            child: Text('Signup', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),),
+              },
           ),
+
           Space(37.h),
           Row(
             children: [

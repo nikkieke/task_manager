@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:either_dart/either.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,6 +16,9 @@ class AuthService{
   /// define an instance of FirebaseAuth to carry out Auth functions
   final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
+  ///Initialize fireStore
+  final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
   ///Auth Functions
   User? get currentFirebaseUser => firebaseAuth.currentUser;
 
@@ -27,7 +31,54 @@ class AuthService{
     return firebaseAuth.authStateChanges();
   }
 
+  Future<Either<ErrorHandler, NewUser>>getUserFromDB(String uid)async{
+    try{
+      final userSnapshot = await fireStore.collection(uid).doc(uid).get();
+      if (userSnapshot.exists){
+        final user = NewUser.fromMap(userSnapshot.data()!);
+        return Right(user);
+      }else{
+        return const Left(ErrorHandler('Failed to get User'));
+      }
+    }catch(e){
+      return Left(ErrorHandler('$e'));
+    }
+  }
 
+  Future<Either<ErrorHandler, NewUser>>registerUser(String email, String password, String fullName) async{
+    try{
+      final createUser = await signup(email, password);
+      if(createUser.isRight){
+        final firebaseUser = createUser.right.data;
+        //define a user object and pass in the values
+        //from the auth successful response
+        final user = NewUser(
+            uid: firebaseUser.uid,
+            fullName: fullName,
+            avatar: '',
+            email: email,
+            password: password,
+            isEmailVerified: firebaseUser.emailVerified,
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now(),
+        );
+        // Pass this to the 'to Map'
+        final data = user.toMap();
+
+        final userDoc = fireStore.collection(user.uid).doc(user.uid);
+        //set data to fireStore
+        await userDoc.set(data);
+        //check if data has been saved successfully
+        await getUserFromDB(user.uid);
+
+        return Right(user);
+      }else{
+        return  Left(ErrorHandler(createUser.left.message,code: createUser.left.code));
+      }
+    }catch(e){
+      return Left(ErrorHandler('$e'));
+    }
+  }
 
   Future<Either<ErrorHandler, SuccessHandler<User>>> signIn(String email, String password)async{
       try{
