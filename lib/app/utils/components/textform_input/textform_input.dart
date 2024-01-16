@@ -27,7 +27,9 @@ class TextFormInput extends StatelessWidget {
         this.onTapOutside,
         this.onEditingComplete,
         this.focusNode,
-        this.keyboardType,});
+        this.keyboardType,
+        this.errorText,
+      });
 
   final String? labelText;
   final bool obscureText;
@@ -54,6 +56,7 @@ class TextFormInput extends StatelessWidget {
   final void Function(String)? onFieldSubmitted;
   final void Function()? onTap;
   final FocusNode? focusNode;
+  final String? errorText;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +83,7 @@ class TextFormInput extends StatelessWidget {
       decoration: InputDecoration(
         fillColor: fillColor,
         filled: filled,
+        errorText: errorText,
         errorStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
           height: 0.2,
           color: Colors.red,

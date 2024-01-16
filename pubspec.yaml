@@ -25,6 +25,7 @@ dependencies:
   go_router: ^10.0.0
   google_fonts: ^6.1.0
   google_sign_in: ^6.1.6
+  hive_flutter: ^1.1.0
   hooks_riverpod: ^2.4.3
   internet_connection_checker: ^1.0.0+1
   loading_animation_widget: ^1.2.0+4
