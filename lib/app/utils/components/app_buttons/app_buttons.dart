@@ -57,3 +57,22 @@ class AuthOptionButton extends StatelessWidget {
       );
   }
 }
+
+class MainButton extends StatelessWidget {
+  const MainButton({required this.loading, required this.text, required this.pressed, super.key});
+
+  final bool loading;
+  final String text;
+  final VoidCallback pressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return  ElevatedButton(
+        onPressed: pressed,
+        child: loading?
+        const LoadingIndicator(color: Colors.white,):
+        Text(text, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),),
+    );
+  }
+}
+
