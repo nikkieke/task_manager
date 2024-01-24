@@ -10,7 +10,6 @@ class NewUser extends Equatable{
     required this.fullName,
     required this.avatar,
     required this.email,
-    required this.password,
     required this.isEmailVerified,
     required this.createdAt,
     required this.updatedAt,
@@ -20,7 +19,6 @@ class NewUser extends Equatable{
   final String fullName;
   final String avatar;
   final String email;
-  final String password;
   final bool isEmailVerified;
   final Timestamp createdAt;
   final Timestamp updatedAt;
@@ -30,7 +28,6 @@ class NewUser extends Equatable{
     String? fullName,
     String? avatar,
     String? email,
-    String? password,
     bool? isEmailVerified,
     Timestamp? createdAt,
     Timestamp? updatedAt,
@@ -40,7 +37,6 @@ class NewUser extends Equatable{
       fullName: fullName ?? this.fullName,
       avatar: avatar ?? this.avatar,
       email: email ?? this.email,
-      password: password ?? this.password,
       isEmailVerified: isEmailVerified ?? this.isEmailVerified,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -53,7 +49,6 @@ class NewUser extends Equatable{
         fullName: map['fullName'] as String,
         avatar: map['avatar'] as String,
         email: map['email'] as String,
-        password: map['password'] as String,
         isEmailVerified: map['isEmailVerified'] as bool,
         createdAt: map['createdAt'] as Timestamp,
         updatedAt: map['updatedAt'] as Timestamp,
@@ -67,7 +62,6 @@ class NewUser extends Equatable{
       'fullName': fullName,
       'avatar': avatar,
       'email': email,
-      'password': password,
       'isEmailVerified': isEmailVerified,
       'createdAt': createdAt,
       'updatedAt': createdAt,
@@ -87,7 +81,6 @@ class NewUser extends Equatable{
     fullName,
     avatar,
     email,
-    password,
     isEmailVerified,
     createdAt,
     updatedAt,
