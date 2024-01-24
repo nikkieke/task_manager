@@ -242,6 +242,10 @@ class _SignupFormState extends ConsumerState<SignupForm> {
                     currentFocus.unfocus();
                     handleSignUp();
                   }
+                }else{
+                  ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text('Fill all required data correctly')),
+                  );
                 }
               },
           ),
@@ -257,7 +261,15 @@ class _SignupFormState extends ConsumerState<SignupForm> {
             ],
           ),
           Space(37.h),
-          AuthOptionButton(loading: false, googlePressed: () {  }, applePressed: () {  },),
+          AuthOptionButton(
+            loading: isLoading,
+            googlePressed: () {
+              ref.read(signUpProvider.notifier).socialSignIn(SocialLogIn.google);
+            },
+            applePressed: () {
+              ref.read(signUpProvider.notifier).socialSignIn(SocialLogIn.apple);
+            },
+          ),
           Space(10.h),
           TextButton(
             onPressed: () {

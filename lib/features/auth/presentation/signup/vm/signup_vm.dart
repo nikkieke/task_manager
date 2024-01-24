@@ -1,5 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:task_manager/app/app.dart';
+import 'package:task_manager/features/features.dart';
 
 final signUpProvider = StateNotifierProvider.autoDispose<SignUpNotifier,
 AsyncValue<void>>(SignUpNotifier.new);
@@ -14,5 +15,10 @@ class SignUpNotifier extends StateNotifier<AsyncValue<void>>{
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => ref.read(authRepoProvider).createNewUser(email, password, fullName));
 
+  }
+
+  Future<void>socialSignIn(SocialLogIn provider)async{
+    state = const AsyncValue.loading();
+    state = await AsyncValue.guard(() => ref.read(authRepoProvider).signInWithSocials(provider));
   }
 }

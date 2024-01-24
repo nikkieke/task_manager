@@ -4,8 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:either_dart/either.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:task_manager/app/app.dart';
+import 'package:task_manager/app/app_services/analytics/analytics_events.dart';
 import 'package:task_manager/features/auth/auth.dart';
 import 'package:the_apple_sign_in/the_apple_sign_in.dart';
+
+enum SocialLogIn{ apple, google }
 
 class AuthService{
   AuthService._();
@@ -36,6 +40,7 @@ class AuthService{
       final userSnapshot = await fireStore.collection(uid).doc(uid).get();
       if (userSnapshot.exists){
         final user = NewUser.fromMap(userSnapshot.data()!);
+        BaseUtils.basicPrint(user.uid);
         return Right(user);
       }else{
         return const Left(ErrorHandler('Failed to get User'));
@@ -43,6 +48,59 @@ class AuthService{
     }catch(e){
       return Left(ErrorHandler('$e'));
     }
+  }
+
+  Future<Either<ErrorHandler, NewUser>>signInWithSocials(SocialLogIn provider)async{
+    Either<ErrorHandler, Map<String, dynamic>>? signIn;
+    if(provider == SocialLogIn.apple){
+      signIn = await signInWithApple();
+    }else if(provider == SocialLogIn.google){
+      signIn = await signInWithGoogle();
+    }
+    try{
+      if(signIn != null && signIn.isRight){
+        final userData = signIn.right['userData'] as Map<String, dynamic>;
+        final credential = signIn.right['credential'] as UserCredential;
+        final firebaseUser = credential.user!;
+        final email = userData['email']?? '';
+        final displayName = userData['displayName']?? '';
+
+        final user = NewUser(
+          uid: firebaseUser.uid,
+          fullName: '$displayName',
+          avatar: '',
+          email: '$email',
+          isEmailVerified: true,
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now(),
+        );
+        final data = user.toMap();
+        final userDoc = fireStore.collection(user.uid).doc(user.uid);
+        await userDoc.set(data);
+
+        final getUser = await getUserFromDB(user.uid);
+
+        BaseUtils.log('Social signIn', '$getUser');
+
+        await Analytics.instance.logUserEvents(
+            SignUpEvents.accountCreation,
+            {
+              'email': user.email,
+              'method': provider.name,
+              'registration_steps': 'social_verified',
+            }
+        );
+
+        return Right(user);
+      }else{
+        return Left(ErrorHandler(signIn!.left.getMessage, code: signIn.left.code ));
+
+      }
+
+    }catch(e) {
+      return Left(ErrorHandler('$e'));
+    }
+
   }
 
   Future<Either<ErrorHandler, NewUser>>registerUser(String email, String password, String fullName) async{
@@ -57,7 +115,6 @@ class AuthService{
             fullName: fullName,
             avatar: '',
             email: email,
-            password: password,
             isEmailVerified: firebaseUser.emailVerified,
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
