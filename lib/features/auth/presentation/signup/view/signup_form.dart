@@ -39,7 +39,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
     final currentFocus = FocusScope.of(context);
 
     //listen for errors
-    ref.listen<AsyncValue<void>>(
+    ref..listen<AsyncValue<void>>(
         signUpProvider, (_, state) {
           return state.whenOrNull(
             error: (error, stackTrace){
@@ -48,11 +48,25 @@ class _SignupFormState extends ConsumerState<SignupForm> {
               );
             },
           );
+    })
+
+    ..listen<AsyncValue<void>>(
+        socialSignInProvider, (_, state) {
+      return state.whenOrNull(
+        error: (error, stackTrace){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('$error')),
+          );
+        },
+      );
     });
 
     //loading state
     final signUpState = ref.watch(signUpProvider);
     final isLoading = signUpState is AsyncLoading<void>;
+
+    final socialSignInState = ref.watch(socialSignInProvider);
+    final isSocialLoading = socialSignInState is AsyncLoading<void>;
 
 
     return Form(
@@ -262,12 +276,12 @@ class _SignupFormState extends ConsumerState<SignupForm> {
           ),
           Space(37.h),
           AuthOptionButton(
-            loading: isLoading,
+            loading: isSocialLoading,
             googlePressed: () {
-              ref.read(signUpProvider.notifier).socialSignIn(SocialLogIn.google);
+              ref.read(socialSignInProvider.notifier).socialSignIn(SocialLogIn.google);
             },
             applePressed: () {
-              ref.read(signUpProvider.notifier).socialSignIn(SocialLogIn.apple);
+              ref.read(socialSignInProvider.notifier).socialSignIn(SocialLogIn.apple);
             },
           ),
           Space(10.h),
