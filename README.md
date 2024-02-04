@@ -1,5 +1,5 @@
 # Task Manager (A Flutter Project Management App) <img src="https://github.com/nikkieke/task_manager/assets/95222620/cf38cd07-c9bf-4534-848f-4da2b4da3f39" width="5%" height="5%"/> 
-TaskManager is a Flutter app that allows users to effortlessly manage their tasks and projects.
+TaskManager is a Flutter application that allows users to effortlessly manage their tasks and projects.
 
 ## Main Features 💪
 - Authentication
