@@ -2,12 +2,13 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:task_manager/app/app.dart';
 
-
 final analyticsProvider = Provider<Analytics>((ref) {
-  return Analytics();
+  return Analytics.instance;
 });
 
 class Analytics{
+  Analytics._();
+  static final instance = Analytics._();
 
   final FirebaseAnalytics _analytics = FirebaseAnalytics.instance;
 

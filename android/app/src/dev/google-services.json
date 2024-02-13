@@ -58,6 +58,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "936103878318-8904n2kuoqr1atocdmd4k7jcv6d7l987.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.softhon.taskManager.dev",
+            "certificate_hash": "f24ff5e9ae560c3745c65968e2913556c64c8c86"
+          }
+        },
+        {
           "client_id": "936103878318-mvqp650jurvmpi592aod8rqd5sdbknbv.apps.googleusercontent.com",
           "client_type": 3
         }

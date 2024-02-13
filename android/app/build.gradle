@@ -23,10 +23,18 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+def keystoreProperties = new Properties()
+   def keystorePropertiesFile = rootProject.file('key.properties')
+   if (keystorePropertiesFile.exists()) {
+       keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+   }
+
+
+
 android {
     namespace "com.softhon.task_manager"
     compileSdkVersion flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+    ndkVersion "25.1.8937393"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -43,19 +51,40 @@ android {
 
     defaultConfig {
         applicationId "com.softhon.taskManager"
-        minSdkVersion 31
-        targetSdkVersion 31
+        minSdkVersion 25
+        targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-    }
-
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+        ndk {
+            // Specifies the ABI configurations of your native
+            // libraries Gradle should build and package your APK.
+            abiFilters 'armeabi-v7a', 'arm64-v8a'
         }
     }
+
+    signingConfigs {
+        debug {
+            storeFile file("../debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
+        }
+       release {
+           keyAlias keystoreProperties['keyAlias']
+           keyPassword keystoreProperties['keyPassword']
+           storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+           storePassword keystoreProperties['storePassword']
+       }
+   }
+   buildTypes {
+       release {
+           minifyEnabled true
+           shrinkResources true
+           proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+           signingConfig signingConfigs.release
+       }
+   }
+
     flavorDimensions "app"
 
     productFlavors {
@@ -64,7 +93,7 @@ android {
             dimension "app"
             versionNameSuffix "-prod"
         }
-
+g
         dev {
             dimension "app"
             applicationIdSuffix ".dev"
@@ -73,6 +102,7 @@ android {
 
 
     }
+
 }
 
 flutter {
