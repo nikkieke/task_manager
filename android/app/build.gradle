@@ -52,13 +52,13 @@ android {
     defaultConfig {
         applicationId "com.softhon.taskManager"
         minSdkVersion 25
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         ndk {
             // Specifies the ABI configurations of your native
             // libraries Gradle should build and package your APK.
-            abiFilters 'armeabi-v7a', 'arm64-v8a'
+            abiFilters 'armeabi-v7a', 'arm64-v8a','x86_64'
         }
     }
 
