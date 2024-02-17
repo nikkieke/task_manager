@@ -3,15 +3,21 @@ import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/features.dart';
 
 final socialSignInProvider = StateNotifierProvider.autoDispose<SocialSignInNotifier,
-    AsyncValue<void>>(SocialSignInNotifier.new);
+    AsyncValue<NewUser>>(SocialSignInNotifier.new);
 
-class SocialSignInNotifier extends StateNotifier<AsyncValue<void>>{
-  SocialSignInNotifier(this.ref): super (const AsyncData(null));
+class SocialSignInNotifier extends StateNotifier<AsyncValue<NewUser>>{
+  SocialSignInNotifier(this.ref): super (const AsyncData(NewUser()));
 
   final Ref ref;
 
   Future<void>socialSignIn(SocialLogIn provider)async{
     state = const AsyncValue.loading();
-    state = await AsyncValue.guard(() => ref.read(authRepoProvider).signInWithSocials(provider));
+      final result = await ref.read(authRepoProvider).signInWithSocials(provider);
+      if(result.isRight) {
+        state = AsyncValue.data(result.right);
+      }else{
+        state = AsyncValue.error(result.left.message, StackTrace.current);
+      }
+
   }
 }
