@@ -25,10 +25,35 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
 
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
+
+
 
   @override
   Widget build(BuildContext context) {
     final currentFocus = FocusScope.of(context);
+
+    ref.listen<AsyncValue<NewUser>>(
+          socialSignInProvider, (_, state) {
+        return state.whenOrNull(
+          error: (error, stackTrace){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('$error')),
+            );
+          },
+        );
+      });
+
+    //loading state
+    final socialSignInState = ref.watch(socialSignInProvider);
+    final isSocialLoading = socialSignInState is AsyncLoading<void>;
+
     return Form(
       key: _formKey,
       child: Column(
@@ -170,9 +195,13 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           ),
           Space(37.h),
           AuthOptionButton(
-            loading: false,
-            googlePressed: () {  },
-            applePressed: () {AuthService.instance.signInWithApple();  },
+            loading: isSocialLoading,
+            googlePressed: () {
+              ref.read(socialSignInProvider.notifier).socialSignIn(SocialLogIn.google);
+            },
+            applePressed: () {
+              ref.read(socialSignInProvider.notifier).socialSignIn(SocialLogIn.apple);
+            },
           ),
           Space(10.h),
           TextButton(

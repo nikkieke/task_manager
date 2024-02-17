@@ -39,7 +39,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
     final currentFocus = FocusScope.of(context);
 
     //listen for errors
-    ref..listen<AsyncValue<void>>(
+    ref..listen<AsyncValue<NewUser>>(
         signUpProvider, (_, state) {
           return state.whenOrNull(
             error: (error, stackTrace){
@@ -50,7 +50,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
           );
     })
 
-    ..listen<AsyncValue<void>>(
+    ..listen<AsyncValue<NewUser>>(
         socialSignInProvider, (_, state) {
       return state.whenOrNull(
         error: (error, stackTrace){
@@ -98,9 +98,8 @@ class _SignupFormState extends ConsumerState<SignupForm> {
             child: TextFormInput(
               keyboardType:TextInputType.name,
               controller: fullName,
-              labelText: 'jane doe',
+              labelText: 'Jane Doe',
               validator: validateName,
-              errorText: 'Input your name correctly',
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z ]*$'),),
               ],
