@@ -6,22 +6,22 @@ import 'package:equatable/equatable.dart';
 class NewUser extends Equatable{
 
   const NewUser({
-    required this.uid,
-    required this.fullName,
-    required this.avatar,
-    required this.email,
-    required this.isEmailVerified,
-    required this.createdAt,
-    required this.updatedAt,
+     this.uid,
+     this.fullName,
+     this.avatar,
+     this.email,
+     this.isEmailVerified,
+     this.createdAt,
+     this.updatedAt,
 });
 
-  final String uid;
-  final String fullName;
-  final String avatar;
-  final String email;
-  final bool isEmailVerified;
-  final Timestamp createdAt;
-  final Timestamp updatedAt;
+  final String? uid;
+  final String? fullName;
+  final String? avatar;
+  final String? email;
+  final bool? isEmailVerified;
+  final Timestamp? createdAt;
+  final Timestamp? updatedAt;
 
   NewUser copyWith({
     String? uid,
