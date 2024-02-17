@@ -75,12 +75,12 @@ class AuthService{
           updatedAt: Timestamp.now(),
         );
         final data = user.toMap();
-        final userDoc = fireStore.collection(user.uid).doc(user.uid);
+        final userDoc = fireStore.collection(user.uid!).doc(user.uid);
         await userDoc.set(data);
 
-        final getUser = await getUserFromDB(user.uid);
+        final getUser = await getUserFromDB(user.uid!);
 
-        BaseUtils.log('Social signIn', '$getUser');
+        BaseUtils.log('Social signIn', '${getUser.right}');
 
         await Analytics.instance.logUserEvents(
             SignUpEvents.accountCreation,
@@ -122,13 +122,13 @@ class AuthService{
         // Pass this to the 'to Map'
         final data = user.toMap();
 
-        final userDoc = fireStore.collection(user.uid).doc(user.uid);
+        final userDoc = fireStore.collection(user.uid!).doc(user.uid);
         //set data to fireStore
         await userDoc.set(data);
         //check if data has been saved successfully
-        await getUserFromDB(user.uid);
+        final registeredUser = await getUserFromDB(user.uid!);
 
-        return Right(user);
+        return Right(registeredUser.right);
       }else{
         return  Left(ErrorHandler(createUser.left.message,code: createUser.left.code));
       }
