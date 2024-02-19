@@ -4,6 +4,7 @@ import 'package:task_manager/features/auth/auth.dart';
 abstract class AuthRepository{
   Future<Either<ErrorHandler, NewUser>>createNewUser(String email, String password, String fullName);
   Future<Either<ErrorHandler, NewUser>>signInWithSocials(SocialLogIn provider);
+  Future<Either<ErrorHandler, NewUser>>logInUser(String email, String password);
 }
 
 
@@ -18,6 +19,12 @@ class AuthRepoImpl implements AuthRepository{
   @override
   Future<Either<ErrorHandler, NewUser>> signInWithSocials(SocialLogIn provider) {
     return _authService.signInWithSocials(provider);
+  }
+
+  @override
+  Future<Either<ErrorHandler, NewUser>> logInUser(String email, String password) {
+    // TODO: implement logInUser
+    throw UnimplementedError();
   }
 
 }

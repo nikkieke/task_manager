@@ -50,6 +50,21 @@ class AuthService{
     }
   }
 
+  Future<Either<ErrorHandler, NewUser>>logInUser(String email, String password)async{
+    try{
+      //signIn User
+      final loginUser = await signIn(email, password);
+      if(loginUser.isRight){
+        final user = await getUserFromDB(loginUser.right.data.uid);
+        return Right(user.right);
+      }else{
+        return Left(ErrorHandler(loginUser.left.getMessage, code: loginUser.left.code ));
+      }
+    }catch(e){
+      return Left(ErrorHandler('$e'));
+    }
+  }
+
   Future<Either<ErrorHandler, NewUser>>signInWithSocials(SocialLogIn provider)async{
     Either<ErrorHandler, Map<String, dynamic>>? signIn;
     if(provider == SocialLogIn.apple){
