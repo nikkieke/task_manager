@@ -23,8 +23,7 @@ class AuthRepoImpl implements AuthRepository{
 
   @override
   Future<Either<ErrorHandler, NewUser>> logInUser(String email, String password) {
-    // TODO: implement logInUser
-    throw UnimplementedError();
+    return _authService.logInUser(email, password);
   }
 
 }
