@@ -8,6 +8,7 @@ import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/auth/auth.dart';
 
 
+
 class LoginForm extends ConsumerStatefulWidget {
   const LoginForm({
     super.key,
@@ -32,15 +33,29 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     super.dispose();
   }
 
-
+  void handleLogIn(){
+    ref.read(logInProvider.notifier).signIn(email.text,
+      password.text, context,);
+  }
 
 
   @override
   Widget build(BuildContext context) {
     final currentFocus = FocusScope.of(context);
 
-    ref.listen<AsyncValue<NewUser>>(
+    ref..listen<AsyncValue<NewUser>>(
           socialSignInProvider, (_, state) {
+        return state.whenOrNull(
+          error: (error, stackTrace){
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('$error')),
+            );
+          },
+        );
+      })
+
+      ..listen<AsyncValue<NewUser>>(
+          logInProvider, (_, state) {
         return state.whenOrNull(
           error: (error, stackTrace){
             ScaffoldMessenger.of(context).showSnackBar(
@@ -53,6 +68,9 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     //loading state
     final socialSignInState = ref.watch(socialSignInProvider);
     final isSocialLoading = socialSignInState is AsyncLoading<void>;
+
+    final signInState = ref.watch(logInProvider);
+    final isLoading = signInState is AsyncLoading<void>;
 
     return Form(
       key: _formKey,
@@ -171,17 +189,22 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             ],
           ),
            Space(32.h),
-          ElevatedButton(
-              onPressed: (){
-                //ref.read(connectionProvider);
-                // if(_formKey.currentState!.validate()){
-                //   if (!currentFocus.hasPrimaryFocus){
-                //     currentFocus.unfocus();
-                //   }
-                // }
-                context.goNamed(AppRoute.home.name);
+          MainButton(
+            loading: isLoading,
+            text: 'Login',
+              pressed: (){
+                ref.read(connectionProvider);
+                if(_formKey.currentState!.validate()){
+                  if (!currentFocus.hasPrimaryFocus){
+                    currentFocus.unfocus();
+                    handleLogIn();
+                  }
+                }else{
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Fill all required data correctly')),
+                  );
+                }
               },
-              child: Text('Login', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),),
           ),
            Space(37.h),
           Row(
