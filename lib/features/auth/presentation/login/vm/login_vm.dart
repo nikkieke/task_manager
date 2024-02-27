@@ -23,6 +23,7 @@ class LogInNotifier extends StateNotifier<AsyncValue<NewUser>>{
         context.goNamed(AppRoute.home.name);
       }
     }else{
+      BaseUtils.basicPrint(result.left.code);
       state = AsyncValue.error(result.left.message, StackTrace.current);
     }
   }

@@ -18,6 +18,7 @@ class SignUpNotifier extends StateNotifier<AsyncValue<NewUser>>{
     if(result.isRight) {
       state = AsyncValue.data(result.right);
     }else{
+      BaseUtils.basicPrint(result.left.code);
       state = AsyncValue.error(result.left.message, StackTrace.current);
     }
   }
