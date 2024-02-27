@@ -21,11 +21,13 @@ class ErrorHandler extends Equatable implements Exception{
             case 'user-disabled':
                 error = 'Your account has been disabled.';
             case 'too-many-requests':
-                error = 'Too many request, we block you for sometime.';
+                error = 'Too many request, we have blocked you for sometime.';
             case 'operation-not-allowed':
                 error = 'Auth is not enabled';
             case 'email-already-exists':
                 error = 'Email already registered.';
+          case 'invalid-credential':
+            error = 'Invalid login credentials entered';
         }
         return error;
     }
