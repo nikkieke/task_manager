@@ -251,10 +251,10 @@ class _SignupFormState extends ConsumerState<SignupForm> {
               text: 'Signup',
               pressed: (){
                 if(_formKey.currentState!.validate()){
-                  if (!currentFocus.hasPrimaryFocus){
-                    currentFocus.unfocus();
-                    handleSignUp();
-                  }
+                  handleSignUp();
+                  // if (!currentFocus.hasPrimaryFocus){
+                  //   currentFocus.unfocus();
+                  // }
                 }else{
                   ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('Fill all required data correctly')),
