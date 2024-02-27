@@ -20,7 +20,6 @@ class LoginForm extends ConsumerStatefulWidget {
 
 class _LoginFormState extends ConsumerState<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final String errorText = '';
 
   bool obscure = true;
   final TextEditingController email = TextEditingController();
@@ -85,13 +84,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               color: Colors.white,
             ),
           ),
-          Text(
-            errorText,
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).primaryColor,
-            ),
-          ),
            Space(34.h),
           Text(
             'Email Address',
@@ -112,6 +104,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               inputFormatters: [
                 FilteringTextInputFormatter.deny(RegExp('[ ]')),
               ],
+              validator: validateEmail,
               prefixIcon: IconButton(
                 onPressed: () {  },
                 icon: SvgPicture.asset(AppImage.userTag, width: 16,),
@@ -136,6 +129,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               controller: password,
               obscureText: obscure,
               labelText: '********',
+              validator: validatePassword,
               inputFormatters: [
                 LengthLimitingTextInputFormatter(8),
                 FilteringTextInputFormatter.deny(RegExp('[ ]')),
@@ -195,10 +189,10 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               pressed: (){
                 ref.read(connectionProvider);
                 if(_formKey.currentState!.validate()){
-                  if (!currentFocus.hasPrimaryFocus){
-                    currentFocus.unfocus();
-                    handleLogIn();
-                  }
+                  handleLogIn();
+                  // if (!currentFocus.hasPrimaryFocus){
+                  //   currentFocus.unfocus();
+                  // }
                 }else{
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text('Fill all required data correctly')),
