@@ -5,6 +5,7 @@ abstract class AuthRepository{
   Future<Either<ErrorHandler, NewUser>>createNewUser(String email, String password, String fullName);
   Future<Either<ErrorHandler, NewUser>>signInWithSocials(SocialLogIn provider);
   Future<Either<ErrorHandler, NewUser>>logInUser(String email, String password);
+  Future<Either<ErrorHandler, bool>>logOut();
 }
 
 
@@ -24,6 +25,11 @@ class AuthRepoImpl implements AuthRepository{
   @override
   Future<Either<ErrorHandler, NewUser>> logInUser(String email, String password) {
     return _authService.logInUser(email, password);
+  }
+
+  @override
+  Future<Either<ErrorHandler, bool>> logOut() {
+    return _authService.logOut();
   }
 
 }
