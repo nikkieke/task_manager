@@ -2,13 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:task_manager/app/app.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:task_manager/features/features.dart';
 
-class ProfileView extends StatelessWidget {
+class ProfileView extends ConsumerStatefulWidget {
   const ProfileView({super.key});
 
   @override
+  ConsumerState<ProfileView> createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends ConsumerState<ProfileView> {
+  @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue<bool>>(
+        logOutProvider, (_, state) {
+      return state.whenOrNull(
+        error: (error, stackTrace){
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('$error')),
+          );
+        },
+      );
+    });
+
+    final profileState = ref.watch(logOutProvider);
+    final isLoading = profileState is AsyncLoading<void>;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -78,12 +98,12 @@ class ProfileView extends StatelessWidget {
                       }
               ),
               Space(48.h),
-              ElevatedButton(
-                onPressed: (){},
-                child: Text(
-                  'Log out',
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.black),
-                ),
+              MainButton(
+                loading: isLoading,
+                text: 'Login',
+                pressed: (){
+                  ref.read(logOutProvider.notifier).signOut(context);
+                },
               ),
             ],
           ),
