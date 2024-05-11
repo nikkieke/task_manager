@@ -17,8 +17,8 @@ class SharedPrefManager{
   static bool get isLoggedIn => prefs.getBool('isLoggedIn')?? true;
 
   static void clear() {
-    //prefs.clear();
-    SharedPrefManager.isFirstLaunch = false;
+    prefs.clear();
+    //SharedPrefManager.isFirstLaunch = false;
   }
 
 }

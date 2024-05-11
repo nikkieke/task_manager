@@ -18,6 +18,20 @@ final goRouterProvider = Provider<GoRouter>((ref){
     observers: [
       analytics.getAnalyticsObserver(),
     ],
+    redirect: (context, state) {
+      final isFirstLaunch = SharedPrefManager.isFirstLaunch;
+      if (isFirstLaunch) {
+        if (state.fullPath == '/') {
+          return '/';
+        }
+      } else if (!isFirstLaunch) {
+        if (state.fullPath == '/') {
+          return '/home';
+        }
+      }
+
+      return null;
+    },
     routes: [
       GoRoute(
         path: '/',

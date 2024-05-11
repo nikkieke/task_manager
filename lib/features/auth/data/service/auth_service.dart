@@ -50,12 +50,23 @@ class AuthService{
     }
   }
 
+  Future<Either<ErrorHandler, bool>>logOut()async{
+    try{
+      await firebaseAuth.signOut();
+      SharedPrefManager.clear();
+      return const Right(true);
+    }on FirebaseAuthException catch (e){
+      return Left(ErrorHandler(e.message?? '',code:  e.code));
+    }
+  }
+
   Future<Either<ErrorHandler, NewUser>>logInUser(String email, String password)async{
     try{
       //signIn User
       final loginUser = await signIn(email, password);
       if(loginUser.isRight){
         final user = await getUserFromDB(loginUser.right.data.uid);
+        SharedPrefManager.isFirstLaunch = false;
         return Right(user.right);
       }else{
         return Left(ErrorHandler(loginUser.left.getMessage, code: loginUser.left.code ));
@@ -105,6 +116,7 @@ class AuthService{
               'registration_steps': 'social_verified',
             }
         );
+        SharedPrefManager.isFirstLaunch = false;
 
         return Right(user);
       }else{
@@ -142,6 +154,8 @@ class AuthService{
         await userDoc.set(data);
         //check if data has been saved successfully
         final registeredUser = await getUserFromDB(user.uid!);
+
+        SharedPrefManager.isFirstLaunch = false;
 
         return Right(registeredUser.right);
       }else{
