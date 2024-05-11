@@ -15,6 +15,7 @@ class AddTaskView extends StatefulWidget {
 class _AddTaskViewState extends State<AddTaskView> {
   final TextEditingController details = TextEditingController();
   bool checked = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
