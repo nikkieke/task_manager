@@ -19,6 +19,9 @@ abstract class HiveStorage{
   ///Checks if an item exists in storage by a key
   bool has(String key);
 
+  /// Sets an item data in storage by an auto incremented key
+  dynamic add(List<dynamic>value);
+
   ///Sets an item data in storage by a key
   Future<void>set(String? key, dynamic data);
 
