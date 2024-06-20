@@ -23,5 +23,9 @@ class AppConfig{
     _flavor = flavor;
   }
 
+  static const baseUrl = 'https://taskmanager-icd4.onrender.com/api/';
+
+  // verify email
+String get verifyEmail => '/emailVerify/';
 
 }
