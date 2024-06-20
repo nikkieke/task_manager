@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/features.dart';
 
 final logInProvider = StateNotifierProvider.autoDispose<LogInNotifier,
