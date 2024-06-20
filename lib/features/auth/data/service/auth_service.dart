@@ -328,8 +328,19 @@ Future<Either<ErrorHandler, Map<String, dynamic>>>signInWithApple()async{
 
 }
 
-Future<void> sendEmailVerification()async{
-  //add deep linking implementation and then add verifyemail function
+Future<void> sendEmailVerificationToken()async{
+  //get Id token
+  final idToken = await currentFirebaseUser?.getIdToken();
+  //save id token to hive storage
+
+  try{
+
+    // call api to send email verification token
+
+  }catch(e){
+    // catch error
+
+  }
 }
 
 
