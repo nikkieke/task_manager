@@ -49,4 +49,5 @@ class AppImage{
   static const avatar13 = 'assets/images/avatar13.png';
   static const avatar14 = 'assets/images/avatar14.png';
   static const avatar15 = 'assets/images/avatar15.png';
+  static const emailIcon = 'assets/images/email_icon.riv';
 }
