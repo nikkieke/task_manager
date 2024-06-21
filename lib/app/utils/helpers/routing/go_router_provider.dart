@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/features.dart';
 
 
@@ -52,6 +51,12 @@ final goRouterProvider = Provider<GoRouter>((ref){
         path: '/forgotPassword',
         name: AppRoute.forgotPassword.name,
         builder: (context, state) => const ForgotPasswordView(),
+      ),
+
+      GoRoute(
+        path: '/verifyEmail',
+        name: AppRoute.verifyEmail.name,
+        builder: (context, state) => const VerifyEmailView(),
       ),
 
       ShellRoute(
@@ -146,6 +151,7 @@ enum AppRoute {
   login,
   signup,
   forgotPassword,
+  verifyEmail,
   home,
   chat,
   newProject,
