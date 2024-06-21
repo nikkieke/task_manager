@@ -34,7 +34,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
 
   void handleLogIn(){
     ref.read(logInProvider.notifier).signIn(email.text,
-      password.text, context,);
+      password.text,);
   }
 
 
@@ -42,26 +42,51 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   Widget build(BuildContext context) {
     final currentFocus = FocusScope.of(context);
 
-    ref..listen<AsyncValue<NewUser>>(
-          socialSignInProvider, (_, state) {
-        return state.whenOrNull(
-          error: (error, stackTrace){
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('$error')),
-            );
-          },
-        );
-      })
+    // ref..listen<AsyncValue<NewUser>>(
+    //       socialSignInProvider, (_, state) {
+    //     return state.whenOrNull(
+    //       error: (error, stackTrace){
+    //         ScaffoldMessenger.of(context).showSnackBar(
+    //           SnackBar(content: Text('$error')),
+    //         );
+    //       },
+    //     );
+    //   })
+    //
+    //   ..listen<AsyncValue<NewUser>>(
+    //       logInProvider, (_, state) {
+    //     return state.whenOrNull(
+    //       error: (error, stackTrace){
+    //         ScaffoldMessenger.of(context).showSnackBar(
+    //           SnackBar(content: Text('$error')),
+    //         );
+    //       },
+    //     );
+    //   });
 
-      ..listen<AsyncValue<NewUser>>(
-          logInProvider, (_, state) {
-        return state.whenOrNull(
-          error: (error, stackTrace){
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('$error')),
-            );
-          },
+    //listen for errors
+    ref..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, value) {
+      if (value is AsyncData<NewUser>) {
+        context.pushNamed(AppRoute.home.name,
         );
+      }
+      if (value is AsyncError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${value.error}')),
+        );
+      }
+    })
+
+      ..listen<AsyncValue<NewUser>>(logInProvider, (_, value) {
+        if (value is AsyncData<NewUser>) {
+          context.pushNamed(AppRoute.home.name,
+          );
+        }
+        if (value is AsyncError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${value.error}')),
+          );
+        }
       });
 
     //loading state

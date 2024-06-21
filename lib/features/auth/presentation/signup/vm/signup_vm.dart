@@ -12,15 +12,13 @@ class SignUpNotifier extends StateNotifier<AsyncValue<NewUser>>{
 
   final Ref ref;
 
-  Future<void> signUp(String email, String password, String fullName, BuildContext context)async{
+  Future<void> signUp(String email, String password, String fullName,)async{
     state = const AsyncValue.loading();
       final result = await ref.read(authRepoProvider).createNewUser(
           email, password, fullName,);
     if(result.isRight) {
       state = AsyncValue.data(result.right);
-      if(context.mounted) {
-        context.goNamed(AppRoute.verifyEmail.name);
-      }
+
     }else{
       BaseUtils.basicPrint(result.left.code);
       state = AsyncValue.error(result.left.message, StackTrace.current);

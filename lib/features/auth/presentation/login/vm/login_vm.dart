@@ -12,15 +12,12 @@ class LogInNotifier extends StateNotifier<AsyncValue<NewUser>>{
 
   final Ref ref;
 
-  Future<void> signIn(String email, String password,BuildContext context)async{
+  Future<void> signIn(String email, String password,)async{
     state = const AsyncValue.loading();
     final result = await ref.read(authRepoProvider).logInUser(
       email, password,);
     if(result.isRight) {
       state = AsyncValue.data(result.right);
-      if(context.mounted){
-        context.goNamed(AppRoute.home.name);
-      }
     }else{
       BaseUtils.basicPrint(result.left.code);
       state = AsyncValue.error(result.left.message, StackTrace.current);

@@ -32,7 +32,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
   }
   void handleSignUp(){
     ref.read(signUpProvider.notifier).signUp(email.text,
-        password.text, fullName.text, context,);
+        password.text, fullName.text,);
   }
 
   @override
@@ -40,27 +40,29 @@ class _SignupFormState extends ConsumerState<SignupForm> {
     final currentFocus = FocusScope.of(context);
 
     //listen for errors
-    ref..listen<AsyncValue<NewUser>>(
-        signUpProvider, (_, state) {
-          return state.whenOrNull(
-            error: (error, stackTrace){
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('$error')),
-              );
-            },
-          );
+    ref..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, value) {
+      if (value is AsyncData<NewUser>) {
+        context.pushNamed(AppRoute.home.name,
+        );
+      }
+      if (value is AsyncError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${value.error}')),
+        );
+      }
     })
 
-    ..listen<AsyncValue<NewUser>>(
-        socialSignInProvider, (_, state) {
-      return state.whenOrNull(
-        error: (error, stackTrace){
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('$error')),
+      ..listen<AsyncValue<NewUser>>(signUpProvider, (_, value) {
+        if (value is AsyncData<NewUser>) {
+          context.pushNamed(AppRoute.verifyEmail.name,
           );
-        },
-      );
-    });
+        }
+        if (value is AsyncError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${value.error}')),
+          );
+        }
+      });
 
 
 
