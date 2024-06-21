@@ -12,9 +12,20 @@ class DioService implements HttpService {
   }) {
     //_dio = Dio(baseOptions);
     _dio = dioOverride ?? Dio(baseOptions);
-      _dio.interceptors.addAll([
+      _dio.interceptors.add(
+        InterceptorsWrapper(
+          onRequest: (options, handler) async {
+            //get token from local storage
+            final storageService = HiveStorageService.instance;
+            final token = storageService.get(StorageKey.firebaseIdToken.name);
 
-      ]);
+            // Add the access token to the request header
+            options.headers['Authorization'] = 'Bearer $token';
+            return handler.next(options);
+          },
+        ),
+
+      );
   }
 
   late final Dio _dio;
