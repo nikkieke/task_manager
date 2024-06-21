@@ -1,7 +1,11 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:task_manager/app/storage/hive_storage/hive_storage.dart';
 
-class HiveStorageService implements HiveStorage{
+class HiveStorageService{
+  HiveStorageService._privateConstructor();
+
+  static final HiveStorageService _instance = HiveStorageService._privateConstructor();
+  static HiveStorageService get instance => _instance;
+
   //define a hive box
   late Box<dynamic>hiveBox;
 
@@ -14,47 +18,41 @@ class HiveStorageService implements HiveStorage{
     hiveBox = await Hive.openBox<dynamic>(boxName);
   }
 
-  @override
   Future<void> init() async{
     await openAppBox();
   }
 
-  @override
+
   Future<void> clear() async{
     await hiveBox.clear();
   }
 
-  @override
   Future<void> close() async{
     await hiveBox.close();
   }
 
-  @override
+
   dynamic get(String key) {
     return hiveBox.get(key);
   }
 
-  @override
   dynamic getAll() {
     return hiveBox.values.toList();
   }
 
-  @override
+
   bool has(String key) {
     return hiveBox.containsKey(key);
   }
 
-  @override
   Future<void> remove(String key) async{
     await hiveBox.delete(key);
   }
 
-  @override
   Future<void> set(String? key, dynamic data) async{
     await hiveBox.put(key, data);
   }
 
-  @override
   dynamic add(List<dynamic> value) async{
     await hiveBox.add(value);
   }
