@@ -18,8 +18,19 @@ class AppTheme{
       outlinedButtonTheme: outlinedButtonThemeData,
       textTheme: textTheme(),
       checkboxTheme: checkboxThemeData(),
+      textButtonTheme: textButtonThemeData(),
 
 
+    );
+  }
+
+  static TextButtonThemeData textButtonThemeData(){
+    return TextButtonThemeData(
+      style: TextButton.styleFrom(
+        shape: const StadiumBorder(),
+        padding: EdgeInsets.zero,
+        foregroundColor: const Color(0xffb42c3a),
+      ),
     );
   }
 
