@@ -32,8 +32,9 @@ class _SignupFormState extends ConsumerState<SignupForm> {
   }
   void handleSignUp(){
     ref.read(signUpProvider.notifier).signUp(email.text,
-        password.text, fullName.text,);
+        password.text, fullName.text, context,);
   }
+
   @override
   Widget build(BuildContext context) {
     final currentFocus = FocusScope.of(context);
@@ -60,6 +61,8 @@ class _SignupFormState extends ConsumerState<SignupForm> {
         },
       );
     });
+
+
 
     //loading state
     final signUpState = ref.watch(signUpProvider);
