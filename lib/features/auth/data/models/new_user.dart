@@ -10,6 +10,7 @@ class NewUser extends Equatable{
      this.fullName,
      this.avatar,
      this.email,
+     this.token,
      this.isEmailVerified,
      this.createdAt,
      this.updatedAt,
@@ -19,6 +20,7 @@ class NewUser extends Equatable{
   final String? fullName;
   final String? avatar;
   final String? email;
+  final String? token;
   final bool? isEmailVerified;
   final Timestamp? createdAt;
   final Timestamp? updatedAt;
@@ -28,6 +30,7 @@ class NewUser extends Equatable{
     String? fullName,
     String? avatar,
     String? email,
+    String? token,
     bool? isEmailVerified,
     Timestamp? createdAt,
     Timestamp? updatedAt,
@@ -37,6 +40,7 @@ class NewUser extends Equatable{
       fullName: fullName ?? this.fullName,
       avatar: avatar ?? this.avatar,
       email: email ?? this.email,
+      token: token ?? this.token,
       isEmailVerified: isEmailVerified ?? this.isEmailVerified,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -49,6 +53,7 @@ class NewUser extends Equatable{
         fullName: map['fullName'] as String,
         avatar: map['avatar'] as String,
         email: map['email'] as String,
+        token: map['token'] as String,
         isEmailVerified: map['isEmailVerified'] as bool,
         createdAt: map['createdAt'] as Timestamp,
         updatedAt: map['updatedAt'] as Timestamp,
@@ -62,6 +67,7 @@ class NewUser extends Equatable{
       'fullName': fullName,
       'avatar': avatar,
       'email': email,
+      'token': token,
       'isEmailVerified': isEmailVerified,
       'createdAt': createdAt,
       'updatedAt': createdAt,
@@ -73,7 +79,7 @@ class NewUser extends Equatable{
 
   @override
   String toString(){
-    return 'NewUser(uid: uid, fullName: fullName, avatar: avatar, email: email, password: password, isEmailVerified: isEmailVerified, createdAt: createdAt, updatedAt: updatedAt)';
+    return 'NewUser(uid: $uid, fullName: $fullName, avatar: $avatar, email: $email, isEmailVerified: $isEmailVerified, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
   @override
   List<Object?> get props => [
@@ -81,6 +87,7 @@ class NewUser extends Equatable{
     fullName,
     avatar,
     email,
+    token,
     isEmailVerified,
     createdAt,
     updatedAt,

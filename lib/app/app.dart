@@ -1,6 +1,9 @@
 export 'app_config/app_config.dart';
 export 'app_init/app_init.dart';
 export 'app_services/app_services.dart';
+export 'http/dio_exceptions.dart';
+export 'http/dio_http_service.dart';
+export 'http/http_service.dart';
 export 'providers/provider.dart';
 export 'storage/storage.dart';
 export 'utils/utils.dart';
