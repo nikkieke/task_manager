@@ -26,3 +26,4 @@ class LogOutNotifier extends StateNotifier<AsyncValue<bool>>{
     }
   }
 }
+

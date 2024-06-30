@@ -13,6 +13,7 @@ class ProfileView extends ConsumerStatefulWidget {
 }
 
 class _ProfileViewState extends ConsumerState<ProfileView> {
+
   @override
   Widget build(BuildContext context) {
     ref.listen<AsyncValue<bool>>(
@@ -166,6 +167,7 @@ class DetailsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       width: double.maxFinite,
