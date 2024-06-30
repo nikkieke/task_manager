@@ -26,6 +26,9 @@ class AuthService {
   ///=======> User Auth state Functions
   User? get currentFirebaseUser => firebaseAuth.currentUser;
 
+  ///=========> Storage instance
+  final storageService = HiveStorageService.instance;
+
   Future<String?> reloadFirebaseUser() async {
     await firebaseAuth.currentUser?.reload();
     return currentFirebaseUser?.uid;
@@ -105,6 +108,10 @@ class AuthService {
         }
 
         SharedPrefManager.isFirstLaunch = false;
+
+        // save user name to local storage
+        await storageService.set(StorageKey.username.name, user.fullName);
+        await storageService.set(StorageKey.userEmail.name, user.email);
 
         print(registeredUser.right);
 
@@ -235,7 +242,16 @@ class AuthService {
         });
         SharedPrefManager.isFirstLaunch = false;
 
-        return Right(user);
+        // save user name to local storage
+        await storageService.set(StorageKey.username.name, user.fullName);
+        await storageService.set(StorageKey.userEmail.name, user.email);
+
+        if(getUser.isRight){
+          return Right(getUser.right);
+        }else{
+          return Left(getUser.left);
+        }
+
       } else {
         return Left(
           ErrorHandler(signIn!.left.getMessage, code: signIn.left.code),);
@@ -287,19 +303,13 @@ class AuthService {
     }
   }
 
-  Future<Either<ErrorHandler, bool>> signOut() async {
-    try {
-      await firebaseAuth.signOut();
-      return const Right(true);
-    } on FirebaseAuthException catch (e) {
-      return Left(ErrorHandler(e.message ?? '', code: e.code));
-    }
-  }
+
 
   Future<Either<ErrorHandler, bool>> logOut() async {
     try {
       await firebaseAuth.signOut();
       SharedPrefManager.clear();
+      await storageService.clear();
       return const Right(true);
     } on FirebaseAuthException catch (e) {
       return Left(ErrorHandler(e.message ?? '', code: e.code));
@@ -309,14 +319,13 @@ class AuthService {
   Future<void> deleteCurrentFirebaseUser() async {
     if (firebaseAuth.currentUser != null) {
       await firebaseAuth.currentUser?.delete();
-      await signOut();
+      await logOut();
     }
   }
 
 
   ///============> Other Auth Functions
   Future<Either<ErrorHandler, SuccessHandler<String>>> sendEmailVerificationToken() async {
-    final storageService = HiveStorageService.instance;
     final HttpService dioClient = DioService();
     final String id;
 
@@ -326,7 +335,6 @@ class AuthService {
       print('idtoken: $idToken');
 
       //save id token to hive storage
-      await storageService.init();
       await storageService.set(StorageKey.firebaseIdToken.name, idToken);
 
       //get user details
