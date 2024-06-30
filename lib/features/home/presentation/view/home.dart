@@ -14,6 +14,15 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final TextEditingController searchCtr = TextEditingController();
+  String fullName = '';
+
+  @override
+  void initState() {
+    final storageService = HiveStorageService.instance;
+    fullName = storageService.get(StorageKey.username.name).toString();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +44,7 @@ class _HomeViewState extends State<HomeView> {
                             fontSize: 13.sp,),
                       ),
                       Text(
-                        'Fazil Laghari',
+                        fullName,
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                     ],
