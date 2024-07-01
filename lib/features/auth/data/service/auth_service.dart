@@ -1,5 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:either_dart/either.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -51,6 +53,11 @@ class AuthService {
     } catch (e) {
       return Left(ErrorHandler('$e'));
     }
+  }
+
+  Future<void>saveToLocalStorage(String key, dynamic value) async{
+      final encoded = json.encode(value);
+      await storageService.set(key, encoded);
   }
 
   ///=========> Auth Functions
@@ -109,9 +116,8 @@ class AuthService {
 
         SharedPrefManager.isFirstLaunch = false;
 
-        // save user name to local storage
-        await storageService.set(StorageKey.username.name, user.fullName);
-        await storageService.set(StorageKey.userEmail.name, user.email);
+        // save user details to local storage
+        await saveToLocalStorage(StorageKey.userprofile.name, user);
 
         print(registeredUser.right);
 
@@ -242,9 +248,8 @@ class AuthService {
         });
         SharedPrefManager.isFirstLaunch = false;
 
-        // save user name to local storage
-        await storageService.set(StorageKey.username.name, user.fullName);
-        await storageService.set(StorageKey.userEmail.name, user.email);
+        // save user details to local storage
+        await saveToLocalStorage(StorageKey.userprofile.name, user);
 
         if(getUser.isRight){
           return Right(getUser.right);
