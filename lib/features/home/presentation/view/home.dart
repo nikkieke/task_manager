@@ -18,8 +18,8 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
-    final storageService = HiveStorageService.instance;
-    fullName = storageService.get(StorageKey.username.name).toString();
+    // final storageService = HiveStorageService.instance;
+    // fullName = storageService.get(StorageKey.username.name).toString();
     super.initState();
   }
 
