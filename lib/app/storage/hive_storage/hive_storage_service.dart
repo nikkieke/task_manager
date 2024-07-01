@@ -61,6 +61,6 @@ class HiveStorageService{
 
 enum StorageKey{
   firebaseIdToken,
-  username,
+  userprofile,
   userEmail,
 }
