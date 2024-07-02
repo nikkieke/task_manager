@@ -8,3 +8,7 @@ final userDataProvider = FutureProvider((ref) {
 final userLogOut = FutureProvider((ref) {
   return ref.watch(authRepoProvider).logOut();
 });
+
+final saveUserData = FutureProvider((ref) {
+  return ref.watch(userRepoProvider).saveUserInfo();
+});

@@ -27,7 +27,8 @@ class UserService{
       final user = NewUser.fromMap(data!);
 
       // save user name to local storage
-      //await storageService.set(StorageKey.username.name, user.fullName);
+      final encoded = json.encode(user);
+      await storageService.set(StorageKey.userprofile.name, encoded);
 
       // return newUser
       return Right(user);

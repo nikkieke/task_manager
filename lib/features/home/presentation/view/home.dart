@@ -2,29 +2,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
-import 'package:task_manager/app/app.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:task_manager/features/features.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  ConsumerState<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends ConsumerState<HomeView> {
+
   final TextEditingController searchCtr = TextEditingController();
   String fullName = '';
 
   @override
   void initState() {
-    // final storageService = HiveStorageService.instance;
-    // fullName = storageService.get(StorageKey.username.name).toString();
+  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    ref.read(userRepoProvider).saveUserInfo();
+  });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(userDataProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -40,13 +43,22 @@ class _HomeViewState extends State<HomeView> {
                       Text(
                         'Welcome Back!',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 13.sp,),
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 13.sp,),
                       ),
-                      Text(
-                        fullName,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
+                      user.maybeWhen(
+                        data: (data){
+                          return Text(
+                            '${data.right.fullName}',
+                            style: Theme.of(context).textTheme.titleLarge,
+                          );
+                        },
+                          orElse: (){
+                            if()
+                          }
+                      )
+
+
                     ],
                   ),
                    TextButton(
