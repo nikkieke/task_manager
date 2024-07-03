@@ -13,21 +13,20 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
-
   final TextEditingController searchCtr = TextEditingController();
-  String fullName = '';
 
   @override
   void initState() {
-  WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    ref.read(userRepoProvider).saveUserInfo();
-  });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      ref.read(getUserDataProvider.notifier).userData();
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userDataProvider);
+    final userX = ref.watch(getUserDataProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -43,33 +42,57 @@ class _HomeViewState extends ConsumerState<HomeView> {
                       Text(
                         'Welcome Back!',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 13.sp,),
+                              color: Theme.of(context).primaryColor,
+                              fontSize: 13.sp,
+                            ),
                       ),
                       user.maybeWhen(
-                        data: (data){
-                          return Text(
-                            '${data.right.fullName}',
-                            style: Theme.of(context).textTheme.titleLarge,
-                          );
-                        },
-                          orElse: (){
-                            if()
+                        data: (data) {
+                          if (data.isRight) {
+                            return Text(
+                              '${data.right.fullName}',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            );
+                          } else {
+                            return SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: Text('${userX.value?.fullName}'),
+                            );
+                            // const SizedBox(
+                            //   height: 20,
+                            //   width: 20,
+                            //   child: CircularProgressIndicator(),
+                            // );
                           }
-                      )
-
-
+                        },
+                        orElse: () {
+                          if (userX.value == null) {
+                            return SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: Text('${userX.value?.fullName}'),
+                            );
+                          } else {
+                            return Text(
+                              '${userX.value?.fullName}',
+                              style: Theme.of(context).textTheme.titleLarge,
+                            );
+                          }
+                        },
+                      ),
                     ],
                   ),
-                   TextButton(
-                       onPressed: (){
-                         context.pushNamed(AppRoute.profile.name);
-                       },
-                       child: SizedBox(
-                         width: 47.w,
-                         height: 48.h,
-                         child: Image.asset(AppImage.avatar1),),
-                   ),
+                  TextButton(
+                    onPressed: () {
+                      context.pushNamed(AppRoute.profile.name);
+                    },
+                    child: SizedBox(
+                      width: 47.w,
+                      height: 48.h,
+                      child: Image.asset(AppImage.avatar1),
+                    ),
+                  ),
                 ],
               ),
               Space(36.h),
@@ -112,18 +135,22 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 height: 175.h,
                 child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics(),),
-                    scrollDirection: Axis.horizontal,
+                    parent: BouncingScrollPhysics(),
+                  ),
+                  scrollDirection: Axis.horizontal,
                   slivers: [
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
-                          (context, index){
-                            final completedProject = cP[index];
-                            return Padding(
-                                padding: const EdgeInsets.only(right: 10),
-                                child: CompletedProjectsCard(model: completedProject,),);
-                          },
-                        childCount:  cP.length,
+                        (context, index) {
+                          final completedProject = cP[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 10),
+                            child: CompletedProjectsCard(
+                              model: completedProject,
+                            ),
+                          );
+                        },
+                        childCount: cP.length,
                       ),
                     ),
                   ],
@@ -145,8 +172,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
                     child: Text(
                       'See all',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Theme.of(context).primaryColor,
-                      ),
+                            color: Theme.of(context).primaryColor,
+                          ),
                     ),
                   ),
                 ],
@@ -154,18 +181,21 @@ class _HomeViewState extends ConsumerState<HomeView> {
               Expanded(
                 child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(
-                    parent: BouncingScrollPhysics(),),
+                    parent: BouncingScrollPhysics(),
+                  ),
                   slivers: [
                     SliverList(
                       delegate: SliverChildBuilderDelegate(
-                            (context, index){
-                              final ongoingProject = oP[index];
+                        (context, index) {
+                          final ongoingProject = oP[index];
                           return Padding(
-                                  padding: const EdgeInsets.only(bottom: 10),
-                                  child: OngoingProjectsCard(model: ongoingProject,),
-                                  );
+                            padding: const EdgeInsets.only(bottom: 10),
+                            child: OngoingProjectsCard(
+                              model: ongoingProject,
+                            ),
+                          );
                         },
-                        childCount:  oP.length,
+                        childCount: oP.length,
                       ),
                     ),
                   ],
