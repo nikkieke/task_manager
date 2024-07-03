@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:either_dart/either.dart';
 import 'package:task_manager/features/features.dart';
 
-class UserService{
+class UserService {
   UserService._();
 
   static final instance = UserService._();
@@ -12,8 +12,7 @@ class UserService{
 
   final storageService = HiveStorageService.instance;
 
-  Future<Either<ErrorHandler, NewUser>>saveUserInfo() async{
-
+  Future<Either<ErrorHandler, NewUser>> getUserFromFireStore() async {
     try {
       // reload firebase user
       final userId = await authService.reloadFirebaseUser();
@@ -24,32 +23,32 @@ class UserService{
       final data = doc.data();
 
       // pass user data in new user model
-      final user = NewUser.fromMap(data!);
+      //final user = NewUser.fromMap(data!);
 
       // save user name to local storage
-      final encoded = json.encode(user);
+      //Todo fix Converting object to an encodable object failed: Instance of 'Timestamp' error
+      final encoded = jsonEncode(data);
       await storageService.set(StorageKey.userprofile.name, encoded);
 
       // return newUser
-      return Right(user);
-    }catch(e){
+      return Right(NewUser.fromMap(data!));
+    } catch (e) {
       // catch error
       return Left(ErrorHandler(e.toString()));
     }
   }
 
-  Future<Either<ErrorHandler, NewUser>>getUserInfo(String key)async{
-    try{
+  Future<Either<ErrorHandler, NewUser>> getStoredUser(String key) async {
+    try {
       final result = await storageService.get(key) as String;
       final decoded = jsonDecode(result) as String?;
-      if(decoded == null){
+      if (decoded == null) {
         return const Right(NewUser());
-      }else{
+      } else {
         return Right(NewUser.fromJson(decoded));
       }
-    }catch (e){
+    } catch (e) {
       return Left(ErrorHandler(e.toString()));
     }
   }
-
 }
