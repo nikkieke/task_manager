@@ -30,9 +30,13 @@ class _SignupFormState extends ConsumerState<SignupForm> {
     password.dispose();
     super.dispose();
   }
-  void handleSignUp(){
-    ref.read(signUpProvider.notifier).signUp(email.text,
-        password.text, fullName.text,);
+
+  void handleSignUp() {
+    ref.read(signUpProvider.notifier).signUp(
+          email.text,
+          password.text,
+          fullName.text,
+        );
   }
 
   @override
@@ -40,21 +44,25 @@ class _SignupFormState extends ConsumerState<SignupForm> {
     final currentFocus = FocusScope.of(context);
 
     //listen for errors
-    ref..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, value) {
-      if (value is AsyncData<NewUser>) {
-        context.pushNamed(AppRoute.home.name,
-        );
-      }
-      if (value is AsyncError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${value.error}')),
-        );
-      }
-    })
-
+    ref
+      ..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, value) {
+        if (value is AsyncData<NewUser>) {
+          context.pushNamed(
+            AppRoute.home.name,
+          );
+        }
+        if (value is AsyncError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${value.error}')),
+          );
+        }
+      })
       ..listen<AsyncValue<NewUser>>(signUpProvider, (_, value) {
         if (value is AsyncData<NewUser>) {
-          context.pushNamed(AppRoute.verifyEmail.name,
+          // Todo fix navigation to new page based on result from the function
+          print(value.value.fullName);
+          context.pushNamed(
+            AppRoute.verifyEmail.name,
           );
         }
         if (value is AsyncError) {
@@ -64,15 +72,12 @@ class _SignupFormState extends ConsumerState<SignupForm> {
         }
       });
 
-
-
     //loading state
     final signUpState = ref.watch(signUpProvider);
     final isLoading = signUpState is AsyncLoading<void>;
 
     final socialSignInState = ref.watch(socialSignInProvider);
     final isSocialLoading = socialSignInState is AsyncLoading<void>;
-
 
     return Form(
       key: _formKey,
@@ -83,9 +88,9 @@ class _SignupFormState extends ConsumerState<SignupForm> {
           Text(
             'Create your account',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
           ),
           Space(24.h),
           Text(
@@ -101,16 +106,21 @@ class _SignupFormState extends ConsumerState<SignupForm> {
               color: Color(0xff1f1f1f),
             ),
             child: TextFormInput(
-              keyboardType:TextInputType.name,
+              keyboardType: TextInputType.name,
               controller: fullName,
               labelText: 'Jane Doe',
               validator: validateName,
               inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r'^[a-zA-Z ]*$'),),
+                FilteringTextInputFormatter.allow(
+                  RegExp(r'^[a-zA-Z ]*$'),
+                ),
               ],
               prefixIcon: IconButton(
-                onPressed: () {  },
-                icon: SvgPicture.asset(AppImage.user, width: 16,),
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppImage.user,
+                  width: 16,
+                ),
               ),
             ),
           ),
@@ -128,7 +138,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
               color: Color(0xff1f1f1f),
             ),
             child: TextFormInput(
-              keyboardType:TextInputType.name,
+              keyboardType: TextInputType.name,
               controller: email,
               labelText: 'janedoe@gmail.com',
               validator: validateEmail,
@@ -136,8 +146,11 @@ class _SignupFormState extends ConsumerState<SignupForm> {
                 FilteringTextInputFormatter.deny(RegExp('[ ]')),
               ],
               prefixIcon: IconButton(
-                onPressed: () {  },
-                icon: SvgPicture.asset(AppImage.userTag, width: 16,),
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppImage.userTag,
+                  width: 16,
+                ),
               ),
             ),
           ),
@@ -165,25 +178,33 @@ class _SignupFormState extends ConsumerState<SignupForm> {
                 FilteringTextInputFormatter.deny(RegExp('[ ]')),
               ],
               prefixIcon: IconButton(
-                onPressed: () {  },
-                icon: SvgPicture.asset(AppImage.lock, width: 16,),
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppImage.lock,
+                  width: 16,
+                ),
               ),
-              suffixIcon:
-              IconButton(
+              suffixIcon: IconButton(
                 onPressed: () {
                   setState(() {
                     obscure = !obscure;
                   });
                 },
                 icon: obscure
-                    ?SvgPicture.asset(AppImage.eyeSlash, width: 16,)
-                    :SvgPicture.asset(AppImage.eyeSlash, width: 16,),
+                    ? SvgPicture.asset(
+                        AppImage.eyeSlash,
+                        width: 16,
+                      )
+                    : SvgPicture.asset(
+                        AppImage.eyeSlash,
+                        width: 16,
+                      ),
                 color: Colors.grey,
                 iconSize: 19,
               ),
-              onChanged: (val){
-                if(val.length == 8){
-                  if(currentFocus.hasPrimaryFocus){
+              onChanged: (val) {
+                if (val.length == 8) {
+                  if (currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
                 }
@@ -192,9 +213,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
           ),
           Space(15.h),
           TextButton(
-            onPressed: () {
-
-            },
+            onPressed: () {},
             style: TextButton.styleFrom(
               shape: const StadiumBorder(),
               padding: EdgeInsets.zero,
@@ -209,42 +228,38 @@ class _SignupFormState extends ConsumerState<SignupForm> {
                   children: <TextSpan>[
                     TextSpan(
                       text: ' TaskManager ',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(
-                        fontWeight: FontWeight.w600,),),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           //print('Tap Here onTap');
                         },
                       text: 'Terms of Use',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w600,),),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
                     TextSpan(
                       text: ' and ',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(
-                        fontWeight: FontWeight.w600,),),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
                     TextSpan(
                       recognizer: TapGestureRecognizer()
                         ..onTap = () {
                           //print('Tap Here onTap');
                         },
                       text: 'Privacy Policy',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(
-                        color: Theme.of(context).primaryColor,
-                        fontWeight: FontWeight.w600,),),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).primaryColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
                   ],
                 ),
               ),
@@ -252,40 +267,55 @@ class _SignupFormState extends ConsumerState<SignupForm> {
           ),
           Space(32.h),
           MainButton(
-              loading: isLoading,
-              text: 'Signup',
-              pressed: (){
-                if(_formKey.currentState!.validate()){
-                  handleSignUp();
-                  // if (!currentFocus.hasPrimaryFocus){
-                  //   currentFocus.unfocus();
-                  // }
-                }else{
-                  ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Fill all required data correctly')),
-                  );
-                }
-              },
+            loading: isLoading,
+            text: 'Signup',
+            pressed: () {
+              if (_formKey.currentState!.validate()) {
+                handleSignUp();
+                // if (!currentFocus.hasPrimaryFocus){
+                //   currentFocus.unfocus();
+                // }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('Fill all required data correctly')),
+                );
+              }
+            },
           ),
-
           Space(37.h),
           Row(
             children: [
-              Container(height: 1, width: 111.w,color: const Color(0xFFa6a6a7),),
+              Container(
+                height: 1,
+                width: 111.w,
+                color: const Color(0xFFa6a6a7),
+              ),
               const Space(10),
-              Text('Or continue with', style: Theme.of(context).textTheme.bodyMedium,),
+              Text(
+                'Or continue with',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               const Space(10),
-              Container(height: 1, width: 111.w,color: const Color(0xFFa6a6a7),),
+              Container(
+                height: 1,
+                width: 111.w,
+                color: const Color(0xFFa6a6a7),
+              ),
             ],
           ),
           Space(37.h),
           AuthOptionButton(
             loading: isSocialLoading,
             googlePressed: () {
-              ref.read(socialSignInProvider.notifier).socialSignIn(SocialLogIn.google);
+              ref
+                  .read(socialSignInProvider.notifier)
+                  .socialSignIn(SocialLogIn.google);
             },
             applePressed: () {
-              ref.read(socialSignInProvider.notifier).socialSignIn(SocialLogIn.apple);
+              ref
+                  .read(socialSignInProvider.notifier)
+                  .socialSignIn(SocialLogIn.apple);
             },
           ),
           Space(10.h),
@@ -306,15 +336,12 @@ class _SignupFormState extends ConsumerState<SignupForm> {
                   style: Theme.of(context).textTheme.bodyMedium,
                   children: <TextSpan>[
                     TextSpan(
-
                       text: ' Log in',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xffb42c3a),
-                      ),),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xffb42c3a),
+                          ),
+                    ),
                   ],
                 ),
               ),
