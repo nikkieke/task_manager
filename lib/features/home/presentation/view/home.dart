@@ -54,31 +54,26 @@ class _HomeViewState extends ConsumerState<HomeView> {
                               style: Theme.of(context).textTheme.titleLarge,
                             );
                           } else {
-                            return SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: Text('${userX.value?.fullName}'),
-                            );
-                            // const SizedBox(
-                            //   height: 20,
-                            //   width: 20,
-                            //   child: CircularProgressIndicator(),
-                            // );
+                            if (userX.value == null) {
+                              return const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(),
+                              );
+                            } else {
+                              return Text(
+                                '${userX.value?.fullName}',
+                                style: Theme.of(context).textTheme.titleLarge,
+                              );
+                            }
                           }
                         },
                         orElse: () {
-                          if (userX.value == null) {
-                            return SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: Text('${userX.value?.fullName}'),
-                            );
-                          } else {
-                            return Text(
-                              '${userX.value?.fullName}',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            );
-                          }
+                          return const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(),
+                          );
                         },
                       ),
                     ],
