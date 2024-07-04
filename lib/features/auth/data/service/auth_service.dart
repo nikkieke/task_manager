@@ -14,35 +14,33 @@ import 'package:the_apple_sign_in/the_apple_sign_in.dart';
 enum SocialLogIn { apple, google }
 
 class AuthService {
-  AuthService._();
+  AuthService({
+    required FirebaseAuth firebaseAuth,
+    required FirebaseFirestore fireStore,
+    required HiveStorageService storageService,
+  })  : _firebaseAuth = firebaseAuth,
+        _fireStore = fireStore,
+        _storageService = storageService;
 
-  ///create a single instance of this class that can be accessed through out the app
-  static final instance = AuthService._();
-
-  /// define an instance of FirebaseAuth to carry out Auth functions
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
-
-  ///=========> Initialize fireStore
-  final FirebaseFirestore fireStore = FirebaseFirestore.instance;
+  final FirebaseAuth _firebaseAuth;
+  final FirebaseFirestore _fireStore;
+  final HiveStorageService _storageService;
 
   ///=======> User Auth state Functions
-  User? get currentFirebaseUser => firebaseAuth.currentUser;
-
-  ///=========> Storage instance
-  final storageService = HiveStorageService.instance;
+  User? get currentFirebaseUser => _firebaseAuth.currentUser;
 
   Future<String?> reloadFirebaseUser() async {
-    await firebaseAuth.currentUser?.reload();
+    await _firebaseAuth.currentUser?.reload();
     return currentFirebaseUser?.uid;
   }
 
   Stream<User?> authStateChanges() {
-    return firebaseAuth.authStateChanges();
+    return _firebaseAuth.authStateChanges();
   }
 
   Future<Either<ErrorHandler, NewUser>> getUserFromDB(String uid) async {
     try {
-      final userSnapshot = await fireStore.collection(uid).doc(uid).get();
+      final userSnapshot = await _fireStore.collection(uid).doc(uid).get();
       if (userSnapshot.exists) {
         final user = NewUser.fromMap(userSnapshot.data()!);
         BaseUtils.basicPrint(user.uid);
@@ -55,17 +53,27 @@ class AuthService {
     }
   }
 
-  Future<void>saveToLocalStorage(String key, dynamic value) async{
-      final encoded = json.encode(value);
-      await storageService.set(key, encoded);
+  Future<void> saveToLocalStorage(String key, dynamic value) async {
+    // ignore: avoid_dynamic_calls
+    final jsonData = value.map((String key, dynamic value) {
+      if (value is Timestamp) {
+        return MapEntry(key, value.toDate().toIso8601String());
+      }
+      return MapEntry(key, value);
+    });
+
+    final encoded = json.encode(jsonData);
+    await _storageService.set(key, encoded);
   }
 
   ///=========> Auth Functions
 
   Future<Either<ErrorHandler, SuccessHandler<User>>> signup(
-      String email, String password,) async {
+    String email,
+    String password,
+  ) async {
     try {
-      final authResult = await firebaseAuth.createUserWithEmailAndPassword(
+      final authResult = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -80,7 +88,10 @@ class AuthService {
   }
 
   Future<Either<ErrorHandler, NewUser>> registerUser(
-      String email, String password, String fullName,) async {
+    String email,
+    String password,
+    String fullName,
+  ) async {
     try {
       final createUser = await signup(email, password);
       if (createUser.isRight) {
@@ -100,7 +111,7 @@ class AuthService {
         // Pass this to the 'to Map'
         final data = user.toMap();
 
-        final userDoc = fireStore.collection(user.uid!).doc(user.uid);
+        final userDoc = _fireStore.collection(user.uid!).doc(user.uid);
         //set data to fireStore
         await userDoc.set(data);
         //check if data has been saved successfully
@@ -108,9 +119,9 @@ class AuthService {
 
         //send verify email token
         final sendToken = await sendEmailVerificationToken();
-        if(sendToken.isRight){
+        if (sendToken.isRight) {
           SuccessHandler(sendToken.right.data);
-        }else{
+        } else {
           ErrorHandler(sendToken.left.message);
         }
 
@@ -121,15 +132,15 @@ class AuthService {
 
         print(registeredUser.right);
 
-        if(registeredUser.isRight){
+        if (registeredUser.isRight) {
           return Right(registeredUser.right);
-        }else{
+        } else {
           return Left(registeredUser.left);
         }
-
       } else {
         return Left(
-          ErrorHandler(createUser.left.message, code: createUser.left.code),);
+          ErrorHandler(createUser.left.message, code: createUser.left.code),
+        );
       }
     } catch (e) {
       return Left(ErrorHandler('$e'));
@@ -144,7 +155,7 @@ class AuthService {
 
       if (googleSignInAccount != null) {
         final googleSignInAuthentication =
-        await googleSignInAccount.authentication;
+            await googleSignInAccount.authentication;
 
         final authCredential = GoogleAuthProvider.credential(
           accessToken: googleSignInAuthentication.accessToken,
@@ -152,7 +163,7 @@ class AuthService {
         );
 
         final userCredential =
-        await firebaseAuth.signInWithCredential(authCredential);
+            await _firebaseAuth.signInWithCredential(authCredential);
         return Right({
           'credential': userCredential,
           'userData': {
@@ -187,7 +198,7 @@ class AuthService {
           idToken: String.fromCharCodes(AppleIdCredential.identityToken!),
         );
         final userCredential =
-        await firebaseAuth.signInWithCredential(credential);
+            await _firebaseAuth.signInWithCredential(credential);
         return Right({
           'credential': userCredential,
           'userData': {
@@ -209,7 +220,8 @@ class AuthService {
   }
 
   Future<Either<ErrorHandler, NewUser>> signInWithSocials(
-      SocialLogIn provider,) async {
+    SocialLogIn provider,
+  ) async {
     Either<ErrorHandler, Map<String, dynamic>>? signIn;
     if (provider == SocialLogIn.apple) {
       signIn = await signInWithApple();
@@ -234,7 +246,7 @@ class AuthService {
           updatedAt: Timestamp.now(),
         );
         final data = user.toMap();
-        final userDoc = fireStore.collection(user.uid!).doc(user.uid);
+        final userDoc = _fireStore.collection(user.uid!).doc(user.uid);
         await userDoc.set(data);
 
         final getUser = await getUserFromDB(user.uid!);
@@ -251,15 +263,15 @@ class AuthService {
         // save user details to local storage
         await saveToLocalStorage(StorageKey.userprofile.name, user);
 
-        if(getUser.isRight){
+        if (getUser.isRight) {
           return Right(getUser.right);
-        }else{
+        } else {
           return Left(getUser.left);
         }
-
       } else {
         return Left(
-          ErrorHandler(signIn!.left.getMessage, code: signIn.left.code),);
+          ErrorHandler(signIn!.left.getMessage, code: signIn.left.code),
+        );
       }
     } catch (e) {
       return Left(ErrorHandler('$e'));
@@ -267,10 +279,12 @@ class AuthService {
   }
 
   Future<Either<ErrorHandler, SuccessHandler<User>>> signIn(
-      String email, String password,) async {
+    String email,
+    String password,
+  ) async {
     try {
       /// using the signInWithEmailAndPassword method to get the signin response
-      final authResult = await firebaseAuth.signInWithEmailAndPassword(
+      final authResult = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -291,7 +305,9 @@ class AuthService {
   }
 
   Future<Either<ErrorHandler, NewUser>> logInUser(
-      String email, String password,) async {
+    String email,
+    String password,
+  ) async {
     try {
       //signIn User
       final loginUser = await signIn(email, password);
@@ -301,20 +317,19 @@ class AuthService {
         return Right(user.right);
       } else {
         return Left(
-          ErrorHandler(loginUser.left.getMessage, code: loginUser.left.code),);
+          ErrorHandler(loginUser.left.getMessage, code: loginUser.left.code),
+        );
       }
     } catch (e) {
       return Left(ErrorHandler('$e'));
     }
   }
 
-
-
   Future<Either<ErrorHandler, bool>> logOut() async {
     try {
-      await firebaseAuth.signOut();
+      await _firebaseAuth.signOut();
       SharedPrefManager.clear();
-      await storageService.clear();
+      await _storageService.clear();
       return const Right(true);
     } on FirebaseAuthException catch (e) {
       return Left(ErrorHandler(e.message ?? '', code: e.code));
@@ -322,15 +337,15 @@ class AuthService {
   }
 
   Future<void> deleteCurrentFirebaseUser() async {
-    if (firebaseAuth.currentUser != null) {
-      await firebaseAuth.currentUser?.delete();
+    if (_firebaseAuth.currentUser != null) {
+      await _firebaseAuth.currentUser?.delete();
       await logOut();
     }
   }
 
-
   ///============> Other Auth Functions
-  Future<Either<ErrorHandler, SuccessHandler<String>>> sendEmailVerificationToken() async {
+  Future<Either<ErrorHandler, SuccessHandler<String>>>
+      sendEmailVerificationToken() async {
     final HttpService dioClient = DioService();
     final String id;
 
@@ -340,44 +355,47 @@ class AuthService {
       print('idtoken: $idToken');
 
       //save id token to hive storage
-      await storageService.set(StorageKey.firebaseIdToken.name, idToken);
+      await _storageService.set(StorageKey.firebaseIdToken.name, idToken);
 
       //get user details
-      if (firebaseAuth.currentUser != null) {
+      if (_firebaseAuth.currentUser != null) {
         id = (await reloadFirebaseUser())!;
         print('userid: $id');
-      }else{
+      } else {
         id = '';
       }
 
       // call api to send email verification token
       final url = AppConfig.instance;
-      final res = await dioClient.request(url.verifyEmail + id, RequestMethod.get);
+      final res =
+          await dioClient.request(url.verifyEmail + id, RequestMethod.get);
 
-      if(res.statusCode == 200){
+      if (res.statusCode == 200) {
         print(res.data);
         return Right(SuccessHandler(res.data.toString()));
-      }else{
+      } else {
         return const Left(ErrorHandler('Error in email verification'));
       }
-
     } catch (e) {
       // catch error
       return Left(ErrorHandler(e.toString()));
     }
   }
 
-  Future<Either<ErrorHandler, SuccessHandler<String>>>confirmEmailVerificationToken(String token)async{
+  Future<Either<ErrorHandler, SuccessHandler<String>>>
+      confirmEmailVerificationToken(String token) async {
     final id = (await reloadFirebaseUser())!;
     try {
-      final userSnapshot = await fireStore.collection(id).doc(id).get();
+      final userSnapshot = await _fireStore.collection(id).doc(id).get();
       final user = NewUser.fromMap(userSnapshot.data()!);
       BaseUtils.basicPrint(user.token);
 
-      if(user.token == token){
+      if (user.token == token) {
         //update fireStore
-        final userDoc = fireStore.collection(user.uid!).doc(user.uid);
-        const isVerified = {'isEmailVerified': true,};
+        final userDoc = _fireStore.collection(user.uid!).doc(user.uid);
+        const isVerified = {
+          'isEmailVerified': true,
+        };
         await userDoc.update(isVerified);
         return const Right(SuccessHandler('Email Successfully verified'));
       } else {
@@ -386,17 +404,11 @@ class AuthService {
     } catch (e) {
       return Left(ErrorHandler('$e'));
     }
-
   }
-
-
-
-
-
 
   Future<Either<ErrorHandler, bool>> sendResetEmail(String email) async {
     try {
-      await firebaseAuth.sendPasswordResetEmail(email: email);
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
       return const Right(true);
     } on FirebaseAuthException catch (e) {
       return Left(ErrorHandler(e.message ?? '', code: e.code));
@@ -424,9 +436,10 @@ class AuthService {
   }
 
   Future<Either<ErrorHandler, String>> sendResetPasswordLink(
-      String email,) async {
+    String email,
+  ) async {
     try {
-      await firebaseAuth.sendPasswordResetEmail(email: email);
+      await _firebaseAuth.sendPasswordResetEmail(email: email);
       return Right(
           'A mail containing the link to reset your password has been sent to $email');
     } on FirebaseAuthException catch (error) {
@@ -440,12 +453,4 @@ class AuthService {
       );
     }
   }
-
-
-
-
-
-
-
-
 }

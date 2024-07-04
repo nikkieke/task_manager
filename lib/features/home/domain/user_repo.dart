@@ -7,7 +7,9 @@ abstract class UserRepository {
 }
 
 class UserRepoImpl implements UserRepository {
-  final _userService = UserService.instance;
+  UserRepoImpl(this._userService);
+
+  final UserService _userService;
 
   @override
   Future<Either<ErrorHandler, NewUser>> getUserFromFireStore() {
