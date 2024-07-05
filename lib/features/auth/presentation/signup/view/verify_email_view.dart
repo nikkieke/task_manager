@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pinput/pinput.dart';
 import 'package:rive/rive.dart';
@@ -18,25 +17,37 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
 
   final TextEditingController code = TextEditingController();
 
-  void verifyEmail(){
-    if(code.text.isEmpty) return;
-    ref.read(verifyEmailTokenProvider.notifier).sendVerifyEmailToken(code.text);
+  void verifyEmail(BuildContext context) {
+    if (code.text.isEmpty) return;
+    ref
+        .read(verifyEmailTokenProvider.notifier)
+        .sendVerifyEmailToken(code.text, context);
   }
 
   @override
   Widget build(BuildContext context) {
-    //listen for errors
-    ref.listen<AsyncValue<String>>(verifyEmailTokenProvider, (_, value) {
-      if (value is AsyncData<String>) {
-        context.pushNamed(AppRoute.home.name,
-        );
-      }
-      if (value is AsyncError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${value.error}')),
-        );
-      }
+    ref.listen<AsyncValue<String>>(verifyEmailTokenProvider, (_, state) {
+      return state.whenOrNull(
+        error: (error, stackTrace) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('$error')),
+          );
+        },
+      );
     });
+
+    //listen for errors
+    // ref.listen<AsyncValue<String>>(verifyEmailTokenProvider, (_, value) {
+    //   if (value is AsyncData<String>) {
+    //     context.pushNamed(AppRoute.home.name,
+    //     );
+    //   }
+    //   if (value is AsyncError) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(content: Text('${value.error}')),
+    //     );
+    //   }
+    // });
 
     final verifyEmailTokenState = ref.watch(verifyEmailTokenProvider);
     final isLoading = verifyEmailTokenState is AsyncLoading<void>;
@@ -61,70 +72,65 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
                     );
                     if (controller == null) return;
                     artboard.addController(controller!);
-
                   },
                 ),
               ),
               Text(
                 'Verify your email',
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
               ),
               Space(10.h),
               Text(
                 'Please input the four digit code sent to your email address.',
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
-          Space(40.h),
-          Pinput(
-            controller: code,
-            defaultPinTheme: buildPinTheme(context),
-            focusedPinTheme: buildPinTheme(context, Colors.white),
-            submittedPinTheme: buildPinTheme(context),
-            errorPinTheme: buildPinTheme(context, const Color(0xffb42c3a)),
-          ),
+              Space(40.h),
+              Pinput(
+                controller: code,
+                defaultPinTheme: buildPinTheme(context),
+                focusedPinTheme: buildPinTheme(context, Colors.white),
+                submittedPinTheme: buildPinTheme(context),
+                errorPinTheme: buildPinTheme(context, const Color(0xffb42c3a)),
+              ),
               Space(60.h),
               TextButton(
-                onPressed: () {
-
-                },
+                onPressed: () {},
                 child: RichText(
-                    selectionColor: Theme.of(context).primaryColor,
-                    text: TextSpan(
-                      text: "Didn't get code? Resend in ",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                        children: <TextSpan>[
-                          TextSpan(
-                            text: '55 ',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                              fontWeight: FontWeight.w600,),),
-
-                          TextSpan(
-                            text: 'seconds',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium,),
-                        ]
-                    )
+                  selectionColor: Theme.of(context).primaryColor,
+                  text: TextSpan(
+                    text: "Didn't get code? Resend in ",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: '55 ',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                      TextSpan(
+                        text: 'seconds',
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Space(20.h),
               MainButton(
                 loading: isLoading,
                 text: 'Verify',
-                pressed: verifyEmail,
+                pressed: () => verifyEmail(context),
               ),
               Space(20.h),
               TextButton(
-                onPressed: () {
-
-                },
-                child: Text('Change email?', style: Theme.of(context).textTheme.bodyMedium,),
+                onPressed: () {},
+                child: Text(
+                  'Change email?',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ),
             ],
           ),
@@ -133,16 +139,21 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
     );
   }
 
-  PinTheme buildPinTheme(BuildContext context, [Color borderColor = const Color(0xFF35383F)]) {
+  PinTheme buildPinTheme(
+    BuildContext context, [
+    Color borderColor = const Color(0xFF35383F),
+  ]) {
     return PinTheme(
-            width: 83,
-            height: 60,
-            textStyle: Theme.of(context).textTheme.bodyMedium,
-            decoration:  BoxDecoration(
-              color: const Color(0xff1F222A),
-              borderRadius: const BorderRadius.all(Radius.circular(10)),
-              border: Border.all(color: borderColor,),
-            ),
-          );
+      width: 83,
+      height: 60,
+      textStyle: Theme.of(context).textTheme.bodyMedium,
+      decoration: BoxDecoration(
+        color: const Color(0xff1F222A),
+        borderRadius: const BorderRadius.all(Radius.circular(10)),
+        border: Border.all(
+          color: borderColor,
+        ),
+      ),
+    );
   }
 }
