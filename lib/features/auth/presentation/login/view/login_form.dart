@@ -7,8 +7,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:task_manager/app/app.dart';
 import 'package:task_manager/features/auth/auth.dart';
 
-
-
 class LoginForm extends ConsumerStatefulWidget {
   const LoginForm({
     super.key,
@@ -32,62 +30,61 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     super.dispose();
   }
 
-  void handleLogIn(){
-    ref.read(logInProvider.notifier).signIn(email.text,
-      password.text,);
+  void handleLogIn(BuildContext context) {
+    ref.read(logInProvider.notifier).signIn(
+          email.text,
+          password.text,
+        );
   }
-
 
   @override
   Widget build(BuildContext context) {
     final currentFocus = FocusScope.of(context);
 
-    // ref..listen<AsyncValue<NewUser>>(
-    //       socialSignInProvider, (_, state) {
-    //     return state.whenOrNull(
-    //       error: (error, stackTrace){
-    //         ScaffoldMessenger.of(context).showSnackBar(
-    //           SnackBar(content: Text('$error')),
-    //         );
-    //       },
-    //     );
-    //   })
-    //
-    //   ..listen<AsyncValue<NewUser>>(
-    //       logInProvider, (_, state) {
-    //     return state.whenOrNull(
-    //       error: (error, stackTrace){
-    //         ScaffoldMessenger.of(context).showSnackBar(
-    //           SnackBar(content: Text('$error')),
-    //         );
-    //       },
-    //     );
-    //   });
+    ref
+      ..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, state) {
+        return state.whenOrNull(
+          error: (error, stackTrace) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('$error')),
+            );
+          },
+        );
+      })
+      ..listen<AsyncValue<NewUser>>(logInProvider, (_, state) {
+        return state.whenOrNull(
+          error: (error, stackTrace) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('$error')),
+            );
+          },
+        );
+      });
 
     //listen for errors
-    ref..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, value) {
-      if (value is AsyncData<NewUser>) {
-        context.pushNamed(AppRoute.home.name,
-        );
-      }
-      if (value is AsyncError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${value.error}')),
-        );
-      }
-    })
+    // ref..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, value) {
+    //   if (value is AsyncData<NewUser>) {
+    //     context.pushNamed(AppRoute.home.name,
+    //     );
+    //   }
+    //   if (value is AsyncError) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(content: Text('${value.error}')),
+    //     );
+    //   }
+    // })
 
-      ..listen<AsyncValue<NewUser>>(logInProvider, (_, value) {
-        if (value is AsyncData<NewUser>) {
-          context.pushNamed(AppRoute.home.name,
-          );
-        }
-        if (value is AsyncError) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${value.error}')),
-          );
-        }
-      });
+    //   ..listen<AsyncValue<NewUser>>(logInProvider, (_, value) {
+    //     if (value is AsyncData<NewUser>) {
+    //       context.pushNamed(AppRoute.home.name,
+    //       );
+    //     }
+    //     if (value is AsyncError) {
+    //       ScaffoldMessenger.of(context).showSnackBar(
+    //         SnackBar(content: Text('${value.error}')),
+    //       );
+    //     }
+    //   });
 
     //loading state
     final socialSignInState = ref.watch(socialSignInProvider);
@@ -105,11 +102,11 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           Text(
             'Welcome Back!',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-            ),
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
           ),
-           Space(34.h),
+          Space(34.h),
           Text(
             'Email Address',
             style: Theme.of(context).textTheme.bodyMedium,
@@ -123,7 +120,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               color: Color(0xff1f1f1f),
             ),
             child: TextFormInput(
-              keyboardType:TextInputType.name,
+              keyboardType: TextInputType.name,
               controller: email,
               labelText: 'janedoe@gmail.com',
               inputFormatters: [
@@ -131,8 +128,11 @@ class _LoginFormState extends ConsumerState<LoginForm> {
               ],
               validator: validateEmail,
               prefixIcon: IconButton(
-                onPressed: () {  },
-                icon: SvgPicture.asset(AppImage.userTag, width: 16,),
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppImage.userTag,
+                  width: 16,
+                ),
               ),
             ),
           ),
@@ -160,25 +160,33 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                 FilteringTextInputFormatter.deny(RegExp('[ ]')),
               ],
               prefixIcon: IconButton(
-                onPressed: () {  },
-                icon: SvgPicture.asset(AppImage.lock, width: 16,),
+                onPressed: () {},
+                icon: SvgPicture.asset(
+                  AppImage.lock,
+                  width: 16,
+                ),
               ),
-              suffixIcon:
-              IconButton(
+              suffixIcon: IconButton(
                 onPressed: () {
                   setState(() {
                     obscure = !obscure;
                   });
                 },
                 icon: obscure
-                    ?SvgPicture.asset(AppImage.eyeSlash, width: 16,)
-                    :SvgPicture.asset(AppImage.eyeSlash, width: 16,),
+                    ? SvgPicture.asset(
+                        AppImage.eyeSlash,
+                        width: 16,
+                      )
+                    : SvgPicture.asset(
+                        AppImage.eyeSlash,
+                        width: 16,
+                      ),
                 color: Colors.grey,
                 iconSize: 19,
               ),
-              onChanged: (val){
-                if(val.length == 8){
-                  if(currentFocus.hasPrimaryFocus){
+              onChanged: (val) {
+                if (val.length == 8) {
+                  if (currentFocus.hasPrimaryFocus) {
                     currentFocus.unfocus();
                   }
                 }
@@ -201,48 +209,65 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                   child: Text(
                     'Forgot Password?',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontSize: 12,),
+                          fontSize: 12,
+                        ),
                   ),
                 ),
               ),
             ],
           ),
-           Space(32.h),
+          Space(32.h),
           MainButton(
             loading: isLoading,
             text: 'Login',
-              pressed: (){
-                ref.read(connectionProvider);
-                if(_formKey.currentState!.validate()){
-                  handleLogIn();
-                  // if (!currentFocus.hasPrimaryFocus){
-                  //   currentFocus.unfocus();
-                  // }
-                }else{
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Fill all required data correctly')),
-                  );
-                }
-              },
+            pressed: () {
+              ref.read(connectionProvider);
+              if (_formKey.currentState!.validate()) {
+                handleLogIn(context);
+                // if (!currentFocus.hasPrimaryFocus){
+                //   currentFocus.unfocus();
+                // }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content: Text('Fill all required data correctly')),
+                );
+              }
+            },
           ),
-           Space(37.h),
+          Space(37.h),
           Row(
             children: [
-              Container(height: 1, width: 111.w,color: const Color(0xFFa6a6a7),),
+              Container(
+                height: 1,
+                width: 111.w,
+                color: const Color(0xFFa6a6a7),
+              ),
               const Space(10),
-              Text('Or continue with', style: Theme.of(context).textTheme.bodyMedium,),
+              Text(
+                'Or continue with',
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
               const Space(10),
-              Container(height: 1, width: 111.w,color: const Color(0xFFa6a6a7),),
+              Container(
+                height: 1,
+                width: 111.w,
+                color: const Color(0xFFa6a6a7),
+              ),
             ],
           ),
           Space(37.h),
           AuthOptionButton(
             loading: isSocialLoading,
             googlePressed: () {
-              ref.read(socialSignInProvider.notifier).socialSignIn(SocialLogIn.google);
+              ref
+                  .read(socialSignInProvider.notifier)
+                  .socialSignIn(SocialLogIn.google);
             },
             applePressed: () {
-              ref.read(socialSignInProvider.notifier).socialSignIn(SocialLogIn.apple);
+              ref
+                  .read(socialSignInProvider.notifier)
+                  .socialSignIn(SocialLogIn.apple);
             },
           ),
           Space(10.h),
@@ -263,15 +288,12 @@ class _LoginFormState extends ConsumerState<LoginForm> {
                   style: Theme.of(context).textTheme.bodyMedium,
                   children: <TextSpan>[
                     TextSpan(
-
                       text: ' Sign up',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xffb42c3a),
-                      ),),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xffb42c3a),
+                          ),
+                    ),
                   ],
                 ),
               ),
