@@ -35,17 +35,14 @@ class VerifyEmailNotifier extends StateNotifier<AsyncValue<String>> {
 
   final Ref ref;
 
-  Future<void> sendVerifyEmailToken(String token, BuildContext context) async {
+  Future<void> sendVerifyEmailToken(
+    String token,
+  ) async {
     state = const AsyncValue.loading();
     final result =
         await ref.read(authRepoProvider).confirmEmailVerificationToken(token);
     if (result.isRight) {
       state = AsyncValue.data(result.right.data);
-      if (context.mounted) {
-        context.goNamed(
-          AppRoute.home.name,
-        );
-      }
     } else {
       BaseUtils.basicPrint(result.left.code);
       state = AsyncValue.error(result.left.message, StackTrace.current);

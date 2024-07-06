@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:pinput/pinput.dart';
 import 'package:rive/rive.dart';
@@ -17,37 +18,28 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
 
   final TextEditingController code = TextEditingController();
 
-  void verifyEmail(BuildContext context) {
+  void verifyEmail() {
     if (code.text.isEmpty) return;
-    ref
-        .read(verifyEmailTokenProvider.notifier)
-        .sendVerifyEmailToken(code.text, context);
+    ref.read(verifyEmailTokenProvider.notifier).sendVerifyEmailToken(
+          code.text,
+        );
   }
 
   @override
   Widget build(BuildContext context) {
-    ref.listen<AsyncValue<String>>(verifyEmailTokenProvider, (_, state) {
-      return state.whenOrNull(
-        error: (error, stackTrace) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('$error')),
-          );
-        },
-      );
-    });
-
     //listen for errors
-    // ref.listen<AsyncValue<String>>(verifyEmailTokenProvider, (_, value) {
-    //   if (value is AsyncData<String>) {
-    //     context.pushNamed(AppRoute.home.name,
-    //     );
-    //   }
-    //   if (value is AsyncError) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(content: Text('${value.error}')),
-    //     );
-    //   }
-    // });
+    ref.listen<AsyncValue<String>>(verifyEmailTokenProvider, (_, value) {
+      if (value is AsyncData<String>) {
+        context.pushNamed(
+          AppRoute.home.name,
+        );
+      }
+      if (value is AsyncError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('${value.error}')),
+        );
+      }
+    });
 
     final verifyEmailTokenState = ref.watch(verifyEmailTokenProvider);
     final isLoading = verifyEmailTokenState is AsyncLoading<void>;
@@ -122,7 +114,7 @@ class _VerifyEmailViewState extends ConsumerState<VerifyEmailView> {
               MainButton(
                 loading: isLoading,
                 text: 'Verify',
-                pressed: () => verifyEmail(context),
+                pressed: () => verifyEmail(),
               ),
               Space(20.h),
               TextButton(

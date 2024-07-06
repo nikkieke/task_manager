@@ -30,7 +30,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     super.dispose();
   }
 
-  void handleLogIn(BuildContext context) {
+  void handleLogIn() {
     ref.read(logInProvider.notifier).signIn(
           email.text,
           password.text,
@@ -41,50 +41,52 @@ class _LoginFormState extends ConsumerState<LoginForm> {
   Widget build(BuildContext context) {
     final currentFocus = FocusScope.of(context);
 
-    ref
-      ..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, state) {
-        return state.whenOrNull(
-          error: (error, stackTrace) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('$error')),
-            );
-          },
-        );
-      })
-      ..listen<AsyncValue<NewUser>>(logInProvider, (_, state) {
-        return state.whenOrNull(
-          error: (error, stackTrace) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('$error')),
-            );
-          },
-        );
-      });
+    // ref
+    //   ..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, state) {
+    //     return state.whenOrNull(
+    //       error: (error, stackTrace) {
+    //         ScaffoldMessenger.of(context).showSnackBar(
+    //           SnackBar(content: Text('$error')),
+    //         );
+    //       },
+    //     );
+    //   })
+    //   ..listen<AsyncValue<NewUser>>(logInProvider, (_, state) {
+    //     return state.whenOrNull(
+    //       error: (error, stackTrace) {
+    //         ScaffoldMessenger.of(context).showSnackBar(
+    //           SnackBar(content: Text('$error')),
+    //         );
+    //       },
+    //     );
+    //   });
 
     //listen for errors
-    // ref..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, value) {
-    //   if (value is AsyncData<NewUser>) {
-    //     context.pushNamed(AppRoute.home.name,
-    //     );
-    //   }
-    //   if (value is AsyncError) {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       SnackBar(content: Text('${value.error}')),
-    //     );
-    //   }
-    // })
-
-    //   ..listen<AsyncValue<NewUser>>(logInProvider, (_, value) {
-    //     if (value is AsyncData<NewUser>) {
-    //       context.pushNamed(AppRoute.home.name,
-    //       );
-    //     }
-    //     if (value is AsyncError) {
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(content: Text('${value.error}')),
-    //       );
-    //     }
-    //   });
+    ref
+      ..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, value) {
+        if (value is AsyncData<NewUser>) {
+          context.pushNamed(
+            AppRoute.home.name,
+          );
+        }
+        if (value is AsyncError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${value.error}')),
+          );
+        }
+      })
+      ..listen<AsyncValue<NewUser>>(logInProvider, (_, value) {
+        if (value is AsyncData<NewUser>) {
+          context.pushNamed(
+            AppRoute.home.name,
+          );
+        }
+        if (value is AsyncError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${value.error}')),
+          );
+        }
+      });
 
     //loading state
     final socialSignInState = ref.watch(socialSignInProvider);
@@ -223,7 +225,7 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             pressed: () {
               ref.read(connectionProvider);
               if (_formKey.currentState!.validate()) {
-                handleLogIn(context);
+                handleLogIn();
                 // if (!currentFocus.hasPrimaryFocus){
                 //   currentFocus.unfocus();
                 // }
@@ -260,9 +262,9 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           AuthOptionButton(
             loading: isSocialLoading,
             googlePressed: () {
-              ref
-                  .read(socialSignInProvider.notifier)
-                  .socialSignIn(SocialLogIn.google);
+              ref.read(socialSignInProvider.notifier).socialSignIn(
+                    SocialLogIn.google,
+                  );
             },
             applePressed: () {
               ref

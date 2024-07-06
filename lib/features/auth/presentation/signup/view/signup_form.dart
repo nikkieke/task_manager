@@ -31,7 +31,7 @@ class _SignupFormState extends ConsumerState<SignupForm> {
     super.dispose();
   }
 
-  void handleSignUp(BuildContext context) {
+  void handleSignUp() {
     ref.read(signUpProvider.notifier).signUp(
           email.text,
           password.text,
@@ -43,53 +43,32 @@ class _SignupFormState extends ConsumerState<SignupForm> {
   Widget build(BuildContext context) {
     final currentFocus = FocusScope.of(context);
 
-    ref
-      ..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, state) {
-        return state.whenOrNull(
-          error: (error, stackTrace) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('$error')),
-            );
-          },
-        );
-      })
-      ..listen<AsyncValue<NewUser>>(signUpProvider, (_, state) {
-        return state.whenOrNull(
-          error: (error, stackTrace) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('$error')),
-            );
-          },
-        );
-      });
-
     //listen for errors
-    // ref
-    //   ..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, value) {
-    //     if (value is AsyncData<NewUser>) {
-    //       context.pushNamed(
-    //         AppRoute.home.name,
-    //       );
-    //     }
-    //     if (value is AsyncError) {
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(content: Text('${value.error}')),
-    //       );
-    //     }
-    //   })
-    //   ..listen<AsyncValue<NewUser>>(signUpProvider, (_, value) {
-    //     if (value is AsyncData<NewUser>) {
-    //       print(value.value.fullName);
-    //       context.pushNamed(
-    //         AppRoute.verifyEmail.name,
-    //       );
-    //     }
-    //     if (value is AsyncError) {
-    //       ScaffoldMessenger.of(context).showSnackBar(
-    //         SnackBar(content: Text('${value.error}')),
-    //       );
-    //     }
-    //   });
+    ref
+      ..listen<AsyncValue<NewUser>>(socialSignInProvider, (_, value) {
+        if (value is AsyncData<NewUser>) {
+          context.pushNamed(
+            AppRoute.home.name,
+          );
+        }
+        if (value is AsyncError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${value.error}')),
+          );
+        }
+      })
+      ..listen<AsyncValue<NewUser>>(signUpProvider, (_, value) {
+        if (value is AsyncData<NewUser>) {
+          context.pushNamed(
+            AppRoute.verifyEmail.name,
+          );
+        }
+        if (value is AsyncError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${value.error}')),
+          );
+        }
+      });
 
     //loading state
     final signUpState = ref.watch(signUpProvider);
@@ -290,15 +269,14 @@ class _SignupFormState extends ConsumerState<SignupForm> {
             text: 'Signup',
             pressed: () {
               if (_formKey.currentState!.validate()) {
-                handleSignUp(context);
+                handleSignUp();
                 // if (!currentFocus.hasPrimaryFocus){
                 //   currentFocus.unfocus();
                 // }
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
-                    content: Text('Fill all required data correctly'),
-                  ),
+                      content: Text('Fill all required data correctly')),
                 );
               }
             },
