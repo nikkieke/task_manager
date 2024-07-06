@@ -53,9 +53,9 @@ class AuthService {
     }
   }
 
-  Future<void> saveToLocalStorage(String key, dynamic value) async {
+  Future<void> saveToLocalStorage(String userKey, dynamic userValue) async {
     // ignore: avoid_dynamic_calls
-    final jsonData = value.map((String key, dynamic value) {
+    final jsonData = userValue.map((String key, dynamic value) {
       if (value is Timestamp) {
         return MapEntry(key, value.toDate().toIso8601String());
       }
@@ -63,7 +63,7 @@ class AuthService {
     });
 
     final encoded = json.encode(jsonData);
-    await _storageService.set(key, encoded);
+    await _storageService.set(userKey, encoded);
   }
 
   ///=========> Auth Functions
@@ -126,9 +126,10 @@ class AuthService {
         }
 
         SharedPrefManager.isFirstLaunch = false;
+        SharedPrefManager.isEmailVerified = false;
 
         // save user details to local storage
-        await saveToLocalStorage(StorageKey.userprofile.name, user);
+        await saveToLocalStorage(StorageKey.userprofile.name, data);
 
         print(registeredUser.right);
 
@@ -397,6 +398,7 @@ class AuthService {
           'isEmailVerified': true,
         };
         await userDoc.update(isVerified);
+        SharedPrefManager.isEmailVerified = true;
         return const Right(SuccessHandler('Email Successfully verified'));
       } else {
         return const Left(ErrorHandler('Token Incorrect'));
