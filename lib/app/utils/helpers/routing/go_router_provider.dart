@@ -21,7 +21,6 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       final isFirstLaunch = SharedPrefManager.isFirstLaunch;
       final isEmailVerified = SharedPrefManager.isEmailVerified;
 
-      //TODO confirm if user has verified email before getting to the home page
       if (isFirstLaunch) {
         if (state.fullPath == '/') {
           return '/';
@@ -29,10 +28,10 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       } else if (!isFirstLaunch && !isEmailVerified) {
         if (state.fullPath == '/') {
           return '/verifyEmail';
-        } else if (!isFirstLaunch) {
-          if (state.fullPath == '/') {
-            return '/home';
-          }
+        }
+      } else if (!isFirstLaunch) {
+        if (state.fullPath == '/') {
+          return '/home';
         }
       }
 
