@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:task_manager/features/features.dart';
 
@@ -33,75 +32,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
           padding: const EdgeInsets.fromLTRB(22, 28, 22, 0),
           child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Welcome Back!',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: Theme.of(context).primaryColor,
-                              fontSize: 13.sp,
-                            ),
-                      ),
-                      user.maybeWhen(
-                        data: (data) {
-                          if (data.isRight) {
-                            return Text(
-                              '${data.right.fullName}',
-                              style: Theme.of(context).textTheme.titleLarge,
-                            );
-                          } else {
-                            if (userX.value == null) {
-                              return const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(),
-                              );
-                            } else {
-                              return Text(
-                                '${userX.value?.fullName}',
-                                style: Theme.of(context).textTheme.titleLarge,
-                              );
-                            }
-                          }
-                        },
-                        orElse: () {
-                          return const SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      context.pushNamed(AppRoute.profile.name);
-                    },
-                    child: SizedBox(
-                      width: 47.w,
-                      height: 48.h,
-                      child: Image.asset(AppImage.avatar1),
-                    ),
-                  ),
-                ],
-              ),
+              WelcomeUser(user: user, userX: userX),
               Space(36.h),
-              CupertinoSearchTextField(
-                backgroundColor: const Color(0xff1b1b1b),
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                prefixInsets: const EdgeInsets.only(left: 15),
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                placeholder: 'Search Projects',
-                placeholderStyle: Theme.of(context).textTheme.bodyMedium,
-                controller: searchCtr,
-                onChanged: (value) {},
-              ),
+              HomeSearchBar(searchCtr: searchCtr),
               Space(25.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
