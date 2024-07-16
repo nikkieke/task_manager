@@ -39,7 +39,20 @@ class UserService {
 
       final encoded = jsonEncode(jsonData);
 
+      print(encoded);
+
       await _storageService.set(StorageKey.userprofile.name, encoded);
+
+//WIP: debugging timestamp issue
+//find a way to json encode and decode time stamp
+      final result =
+          await _storageService.get(StorageKey.userprofile.name) as String;
+      print('here: $result');
+      //final decoded = jsonDecode(result) as Map<String, dynamic>;
+      //print('DECODED:$decoded');
+      final here = NewUser.fromJson(result);
+      print('newuser: $here');
+//////////////////////////////////////////////
 
       return Right(NewUser.fromMap(data));
     } catch (e) {
