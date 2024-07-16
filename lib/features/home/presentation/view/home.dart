@@ -24,6 +24,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: get user data in a better way
     final user = ref.watch(userDataProvider);
     final userX = ref.watch(getUserDataProvider);
     return Scaffold(

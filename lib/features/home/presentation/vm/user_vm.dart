@@ -5,10 +5,6 @@ final userDataProvider = FutureProvider((ref) {
   return ref.watch(userRepoProvider).getStoredUser('userProfile');
 });
 
-// final getUserDataProvider = FutureProvider((ref) {
-//   return ref.watch(userRepoProvider).getUserFromFireStore();
-// });
-
 final getUserDataProvider =
     StateNotifierProvider.autoDispose<GetUserDataNotifier, AsyncValue<NewUser>>(
   GetUserDataNotifier.new,

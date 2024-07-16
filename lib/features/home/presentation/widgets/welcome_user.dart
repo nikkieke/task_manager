@@ -38,6 +38,8 @@ class WelcomeUser extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleLarge,
                   );
                 } else {
+                  print(data.left);
+                  //return Text('nothing');
                   if (userX.value == null) {
                     return userNameLoading();
                   } else {
