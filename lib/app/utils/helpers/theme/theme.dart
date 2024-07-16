@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AppTheme{
-  static  ThemeData get dark {
+class AppTheme {
+  static ThemeData get dark {
     return ThemeData(
       useMaterial3: true,
       primaryColor: const Color(0xffb42c3a),
@@ -19,12 +19,10 @@ class AppTheme{
       textTheme: textTheme(),
       checkboxTheme: checkboxThemeData(),
       textButtonTheme: textButtonThemeData(),
-
-
     );
   }
 
-  static TextButtonThemeData textButtonThemeData(){
+  static TextButtonThemeData textButtonThemeData() {
     return TextButtonThemeData(
       style: TextButton.styleFrom(
         shape: const StadiumBorder(),
@@ -36,10 +34,10 @@ class AppTheme{
 
   static CheckboxThemeData checkboxThemeData() {
     return CheckboxThemeData(
-      fillColor: MaterialStateProperty.all(Colors.transparent),
-      overlayColor: MaterialStateProperty.all(Colors.transparent),
-      checkColor: MaterialStateProperty.all(Colors.black),
-      shape:const CircleBorder(),
+      fillColor: WidgetStateProperty.all(Colors.transparent),
+      overlayColor: WidgetStateProperty.all(Colors.transparent),
+      checkColor: WidgetStateProperty.all(Colors.black),
+      shape: const CircleBorder(),
     );
   }
 
@@ -58,9 +56,11 @@ class AppTheme{
   static ElevatedButtonThemeData get elevatedButtonThemeData {
     return ElevatedButtonThemeData(
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.all<Color>(const Color(0xffb42c3a),),
-        minimumSize: MaterialStateProperty.all( Size(376.w, 70.h)),
-        shape: MaterialStateProperty.all<OutlinedBorder>(
+        backgroundColor: WidgetStateProperty.all<Color>(
+          const Color(0xffb42c3a),
+        ),
+        minimumSize: WidgetStateProperty.all(Size(376.w, 70.h)),
+        shape: WidgetStateProperty.all<OutlinedBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10), // Border radius
           ),
@@ -71,18 +71,19 @@ class AppTheme{
 
   static OutlinedButtonThemeData get outlinedButtonThemeData {
     return OutlinedButtonThemeData(
-        style: ButtonStyle(
-          side: MaterialStateProperty.all(const BorderSide(
-            color: Color(0xFFa6a6a7),         // Border width
-          ),),
-            minimumSize: MaterialStateProperty.all( Size(376.w, 70.h)),
-            shape: MaterialStateProperty.all<OutlinedBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10), // Border radius
-              ),
-            ),
+      style: ButtonStyle(
+        side: WidgetStateProperty.all(
+          const BorderSide(
+            color: Color(0xFFa6a6a7), // Border width
+          ),
         ),
+        minimumSize: WidgetStateProperty.all(Size(376.w, 70.h)),
+        shape: WidgetStateProperty.all<OutlinedBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10), // Border radius
+          ),
+        ),
+      ),
     );
   }
-
 }
