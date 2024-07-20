@@ -133,7 +133,7 @@ class AuthService {
         SharedPrefManager.isEmailVerified = false;
 
         // save user details to local storage
-        await saveToLocalStorage(StorageKey.userprofile.name, data);
+        await saveToLocalStorage(StorageKey.userProfile.name, data);
 
         print(registeredUser.right);
 
@@ -267,7 +267,7 @@ class AuthService {
         SharedPrefManager.isFirstLaunch = false;
 
         // save user details to local storage
-        await saveToLocalStorage(StorageKey.userprofile.name, user);
+        await saveToLocalStorage(StorageKey.userProfile.name, user);
 
         if (getUser.isRight) {
           return Right(getUser.right);
