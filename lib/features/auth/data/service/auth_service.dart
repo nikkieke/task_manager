@@ -40,7 +40,10 @@ class AuthService {
 
   Future<Either<ErrorHandler, NewUser>> getUserFromDB(String uid) async {
     try {
-      final userSnapshot = await _fireStore.collection(uid).doc(uid).get();
+      final userSnapshot = await _fireStore
+          .collection(FirebaseConstants.users.name)
+          .doc(uid)
+          .get();
       if (userSnapshot.exists) {
         final user = NewUser.fromMap(userSnapshot.data()!);
         BaseUtils.basicPrint(user.uid);
@@ -111,7 +114,8 @@ class AuthService {
         // Pass this to the 'to Map'
         final data = user.toMap();
 
-        final userDoc = _fireStore.collection(user.uid!).doc(user.uid);
+        final userDoc =
+            _fireStore.collection(FirebaseConstants.users.name).doc(user.uid);
         //set data to fireStore
         await userDoc.set(data);
         //check if data has been saved successfully
@@ -247,7 +251,8 @@ class AuthService {
           updatedAt: Timestamp.now(),
         );
         final data = user.toMap();
-        final userDoc = _fireStore.collection(user.uid!).doc(user.uid);
+        final userDoc =
+            _fireStore.collection(FirebaseConstants.users.name).doc(user.uid);
         await userDoc.set(data);
 
         final getUser = await getUserFromDB(user.uid!);
@@ -387,13 +392,17 @@ class AuthService {
       confirmEmailVerificationToken(String token) async {
     final id = (await reloadFirebaseUser())!;
     try {
-      final userSnapshot = await _fireStore.collection(id).doc(id).get();
+      final userSnapshot = await _fireStore
+          .collection(FirebaseConstants.users.name)
+          .doc(id)
+          .get();
       final user = NewUser.fromMap(userSnapshot.data()!);
       BaseUtils.basicPrint(user.token);
 
       if (user.token == token) {
         //update fireStore
-        final userDoc = _fireStore.collection(user.uid!).doc(user.uid);
+        final userDoc =
+            _fireStore.collection(FirebaseConstants.users.name).doc(user.uid);
         const isVerified = {
           'isEmailVerified': true,
         };
