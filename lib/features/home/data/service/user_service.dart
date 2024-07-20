@@ -23,7 +23,8 @@ class UserService {
       final userId = await _authService.reloadFirebaseUser();
 
       // get current user from fireStore
-      final userDocRef = _fireStore.collection(userId!).doc(userId);
+      final userDocRef =
+          _fireStore.collection(FirebaseConstants.users.name).doc(userId);
       final doc = await userDocRef.get();
       final data = doc.data();
 
