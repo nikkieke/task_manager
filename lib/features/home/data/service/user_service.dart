@@ -42,12 +42,12 @@ class UserService {
 
       print(encoded);
 
-      await _storageService.set(StorageKey.userprofile.name, encoded);
+      await _storageService.set(StorageKey.userProfile.name, encoded);
 
 //WIP: debugging timestamp issue
 //find a way to json encode and decode time stamp
       final result =
-          await _storageService.get(StorageKey.userprofile.name) as String;
+          await _storageService.get(StorageKey.userProfile.name) as String;
       print('here: $result');
       //final decoded = jsonDecode(result) as Map<String, dynamic>;
       //print('DECODED:$decoded');

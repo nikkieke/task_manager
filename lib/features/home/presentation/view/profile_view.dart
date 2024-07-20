@@ -15,7 +15,7 @@ class ProfileView extends ConsumerStatefulWidget {
 class _ProfileViewState extends ConsumerState<ProfileView> {
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userDataProvider);
+    //final user = ref.watch(userDataProvider);
 
     final userNameCard = UserDetails(
       title: 'Fazil Laghari',
