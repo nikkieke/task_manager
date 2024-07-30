@@ -33,12 +33,13 @@ class WelcomeUser extends StatelessWidget {
             user.maybeWhen(
               data: (data) {
                 if (data.isRight) {
+                  print(data.right.fullName);
                   return Text(
                     '${data.right.fullName}',
                     style: Theme.of(context).textTheme.titleLarge,
                   );
                 } else {
-                  print(data.left);
+                  print('here1 ${data.left}');
                   //return Text('nothing');
                   if (userX.value == null) {
                     return userNameLoading();

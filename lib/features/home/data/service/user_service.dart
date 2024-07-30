@@ -39,25 +39,10 @@ class UserService {
       });
 
       final encoded = jsonEncode(jsonData);
-
-      print(encoded);
-
       await _storageService.set(StorageKey.userProfile.name, encoded);
-
-//WIP: debugging timestamp issue
-//find a way to json encode and decode time stamp
-      final result =
-          await _storageService.get(StorageKey.userProfile.name) as String;
-      print('here: $result');
-      //final decoded = jsonDecode(result) as Map<String, dynamic>;
-      //print('DECODED:$decoded');
-      final here = NewUser.fromJson(result);
-      print('newuser: $here');
-//////////////////////////////////////////////
 
       return Right(NewUser.fromMap(data));
     } catch (e) {
-      // catch error
       return Left(ErrorHandler(e.toString()));
     }
   }
@@ -65,11 +50,11 @@ class UserService {
   Future<Either<ErrorHandler, NewUser>> getStoredUser(String key) async {
     try {
       final result = await _storageService.get(key) as String;
-      final decoded = jsonDecode(result) as String?;
+      final decoded = jsonDecode(result) as Map<String, dynamic>?;
       if (decoded == null) {
         return const Right(NewUser());
       } else {
-        return Right(NewUser.fromJson(decoded));
+        return Right(NewUser.fromMap(decoded));
       }
     } catch (e) {
       return Left(ErrorHandler(e.toString()));

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class NewUser extends Equatable {
@@ -21,8 +20,8 @@ class NewUser extends Equatable {
   final String? email;
   final String? token;
   final bool? isEmailVerified;
-  final Timestamp? createdAt;
-  final Timestamp? updatedAt;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   NewUser copyWith({
     String? uid,
@@ -31,8 +30,8 @@ class NewUser extends Equatable {
     String? email,
     String? token,
     bool? isEmailVerified,
-    Timestamp? createdAt,
-    Timestamp? updatedAt,
+    DateTime? createdAt,
+    DateTime? updatedAt,
   }) {
     return NewUser(
       uid: uid ?? this.uid,
@@ -54,10 +53,10 @@ class NewUser extends Equatable {
       email: map['email'] as String,
       token: map['token'] as String,
       isEmailVerified: map['isEmailVerified'] as bool,
-      createdAt: Timestamp.fromDate(DateTime.parse(map['createdAt'] as String)),
-      updatedAt: Timestamp.fromDate(DateTime.parse(map['createdAt'] as String)),
-      //createdAt: DateTime.parse(map['createdAt'] as String),
-      //updatedAt: DateTime.parse(map['updatedAt'] as String),
+      // createdAt: Timestamp.fromDate(DateTime.parse(map['createdAt'] as String)),
+      // updatedAt: Timestamp.fromDate(DateTime.parse(map['createdAt'] as String)),
+      createdAt: DateTime.parse(map['createdAt'] as String),
+      updatedAt: DateTime.parse(map['updatedAt'] as String),
     );
   }
 
@@ -69,8 +68,8 @@ class NewUser extends Equatable {
       'email': email,
       'token': token,
       'isEmailVerified': isEmailVerified,
-      'createdAt': createdAt?.toDate().toIso8601String(),
-      'updatedAt': updatedAt?.toDate().toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 

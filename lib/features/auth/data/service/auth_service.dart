@@ -108,8 +108,8 @@ class AuthService {
           email: email,
           token: '',
           isEmailVerified: firebaseUser.emailVerified,
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now(),
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
         );
         // Pass this to the 'to Map'
         final data = user.toMap();
@@ -247,8 +247,8 @@ class AuthService {
           avatar: '',
           email: '$email',
           isEmailVerified: true,
-          createdAt: Timestamp.now(),
-          updatedAt: Timestamp.now(),
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
         );
         final data = user.toMap();
         final userDoc =
@@ -374,7 +374,9 @@ class AuthService {
       // call api to send email verification token
       final url = AppConfig.instance;
       final res =
-          await dioClient.request(url.verifyEmail + id, RequestMethod.get);
+          await dioClient.request('${url.verifyEmail}/$id', RequestMethod.get);
+
+      print(res.statusCode);
 
       if (res.statusCode == 200) {
         print(res.data);
