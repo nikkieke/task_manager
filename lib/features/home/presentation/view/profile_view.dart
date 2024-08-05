@@ -15,18 +15,7 @@ class ProfileView extends ConsumerStatefulWidget {
 class _ProfileViewState extends ConsumerState<ProfileView> {
   @override
   Widget build(BuildContext context) {
-    //final user = ref.watch(userDataProvider);
-
-    final userNameCard = UserDetails(
-      title: 'Fazil Laghari',
-      leadingIcon: AppImage.userAdd,
-      trailingIcon: AppImage.editLinear,
-    );
-    final userEmailCard = UserDetails(
-      title: 'fazzzil72@gmail.com',
-      leadingIcon: AppImage.userTagLinear,
-      trailingIcon: AppImage.editLinear,
-    );
+    final user = ref.watch(userLocalStorageProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -62,10 +51,18 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                 const ProfileAvatar(),
                 Space(52.h),
                 DetailsCard(
-                  model: userNameCard,
+                  model: UserDetails(
+                    title: '${user.right.fullName}',
+                    leadingIcon: AppImage.userAdd,
+                    trailingIcon: AppImage.editLinear,
+                  ),
                 ),
                 DetailsCard(
-                  model: userEmailCard,
+                  model: UserDetails(
+                    title: '${user.right.email}',
+                    leadingIcon: AppImage.userTagLinear,
+                    trailingIcon: AppImage.editLinear,
+                  ),
                 ),
                 ...List.generate(uD.length, (index) {
                   final userDetail = uD[index];
@@ -88,56 +85,6 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
   }
 }
 
-class ProfileAvatar extends StatelessWidget {
-  const ProfileAvatar({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 133.h,
-      child: Stack(
-        children: [
-          Container(
-            height: 133.h,
-            width: 133.w,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.white,
-                width: 3.w,
-              ),
-            ),
-            child: Image.asset(
-              AppImage.avatar1,
-              scale: 0.6,
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: FloatingActionButton.small(
-              heroTag: null,
-              onPressed: () {},
-              backgroundColor: const Color(0xff1b1b1b),
-              shape: const CircleBorder(),
-              child: SvgPicture.asset(
-                AppImage.addSquare,
-                width: 20,
-                colorFilter: const ColorFilter.mode(
-                  Colors.white54,
-                  BlendMode.srcIn,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class UserDetails {
   const UserDetails({
     required this.title,
@@ -150,16 +97,6 @@ class UserDetails {
 }
 
 final List<UserDetails> uD = [
-  // const UserDetails(
-  //   title: 'Fazil Laghari',
-  //   leadingIcon: AppImage.userAdd,
-  //   trailingIcon: AppImage.editLinear,
-  // ),
-  // const UserDetails(
-  //   title: 'fazzzil72@gmail.com',
-  //   leadingIcon: AppImage.userTagLinear,
-  //   trailingIcon: AppImage.editLinear,
-  // ),
   const UserDetails(
     title: 'Password',
     leadingIcon: AppImage.lockLinear,
