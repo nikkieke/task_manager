@@ -7,12 +7,12 @@ import 'package:task_manager/features/features.dart';
 
 class WelcomeUser extends StatelessWidget {
   const WelcomeUser({
-    super.key,
     required this.user,
     required this.userX,
+    super.key,
   });
 
-  final AsyncValue<Either<ErrorHandler, NewUser>> user;
+  final Either<ErrorHandler, NewUser> user;
   final AsyncValue<NewUser> userX;
 
   @override
@@ -30,29 +30,21 @@ class WelcomeUser extends StatelessWidget {
                     fontSize: 13.sp,
                   ),
             ),
-            user.maybeWhen(
-              data: (data) {
-                if (data.isRight) {
-                  print(data.right.fullName);
-                  return Text(
-                    '${data.right.fullName}',
-                    style: Theme.of(context).textTheme.titleLarge,
-                  );
-                } else {
-                  print('here1 ${data.left}');
-                  //return Text('nothing');
-                  if (userX.value == null) {
-                    return userNameLoading();
-                  } else {
-                    return Text(
-                      '${userX.value?.fullName}',
-                      style: Theme.of(context).textTheme.titleLarge,
-                    );
-                  }
-                }
-              },
-              orElse: userNameLoading,
-            ),
+            if (user.right.fullName != null && user.isRight) ...[
+              Text(
+                '${user.right.fullName}',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+            ] else ...[
+              if (userX.value == null) ...[
+                userNameLoading(),
+              ] else ...[
+                Text(
+                  '${userX.value?.fullName}',
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+              ],
+            ],
           ],
         ),
         TextButton(

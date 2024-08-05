@@ -47,9 +47,9 @@ class UserService {
     }
   }
 
-  Future<Either<ErrorHandler, NewUser>> getStoredUser(String key) async {
+  Either<ErrorHandler, NewUser> getStoredUser(String key) {
     try {
-      final result = await _storageService.get(key) as String;
+      final result = _storageService.get(key) as String;
       final decoded = jsonDecode(result) as Map<String, dynamic>?;
       if (decoded == null) {
         return const Right(NewUser());

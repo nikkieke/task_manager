@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -17,16 +16,15 @@ class _HomeViewState extends ConsumerState<HomeView> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      ref.read(getUserDataProvider.notifier).userData();
+      ref.read(userFireStoreProvider.notifier).userData();
     });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    //TODO: get user data in a better way
-    final user = ref.watch(userDataProvider);
-    final userX = ref.watch(getUserDataProvider);
+    final user = ref.watch(userLocalStorageProvider);
+    final userX = ref.watch(userFireStoreProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(

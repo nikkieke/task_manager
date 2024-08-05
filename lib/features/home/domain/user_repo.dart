@@ -3,7 +3,7 @@ import 'package:task_manager/features/features.dart';
 
 abstract class UserRepository {
   Future<Either<ErrorHandler, NewUser>> getUserFromFireStore();
-  Future<Either<ErrorHandler, NewUser>> getStoredUser(String key);
+  Either<ErrorHandler, NewUser> getStoredUser(String key);
 }
 
 class UserRepoImpl implements UserRepository {
@@ -17,7 +17,7 @@ class UserRepoImpl implements UserRepository {
   }
 
   @override
-  Future<Either<ErrorHandler, NewUser>> getStoredUser(String key) {
+  Either<ErrorHandler, NewUser> getStoredUser(String key) {
     return _userService.getStoredUser(key);
   }
 }
