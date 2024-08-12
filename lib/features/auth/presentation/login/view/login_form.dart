@@ -30,13 +30,6 @@ class _LoginFormState extends ConsumerState<LoginForm> {
     super.dispose();
   }
 
-  void handleLogIn() {
-    ref.read(logInProvider.notifier).signIn(
-          email.text,
-          password.text,
-        );
-  }
-
   @override
   Widget build(BuildContext context) {
     final currentFocus = FocusScope.of(context);
@@ -80,6 +73,8 @@ class _LoginFormState extends ConsumerState<LoginForm> {
           context.pushNamed(
             AppRoute.home.name,
           );
+          // email.clear();
+          // password.clear();
         }
         if (value is AsyncError) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -225,7 +220,10 @@ class _LoginFormState extends ConsumerState<LoginForm> {
             pressed: () {
               ref.read(connectionProvider);
               if (_formKey.currentState!.validate()) {
-                handleLogIn();
+                ref.read(logInProvider.notifier).signIn(
+                      email.text,
+                      password.text,
+                    );
                 // if (!currentFocus.hasPrimaryFocus){
                 //   currentFocus.unfocus();
                 // }
