@@ -58,8 +58,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
               ),
               Space(5.h),
               SizedBox(
+                height: 130.h,
                 width: double.maxFinite,
-                height: 175.h,
                 child: CustomScrollView(
                   physics: const AlwaysScrollableScrollPhysics(
                     parent: BouncingScrollPhysics(),

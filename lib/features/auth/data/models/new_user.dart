@@ -53,8 +53,6 @@ class NewUser extends Equatable {
       email: map['email'] as String,
       token: map['token'] as String,
       isEmailVerified: map['isEmailVerified'] as bool,
-      // createdAt: Timestamp.fromDate(DateTime.parse(map['createdAt'] as String)),
-      // updatedAt: Timestamp.fromDate(DateTime.parse(map['createdAt'] as String)),
       createdAt: DateTime.parse(map['createdAt'] as String),
       updatedAt: DateTime.parse(map['updatedAt'] as String),
     );
