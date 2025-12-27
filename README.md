@@ -14,7 +14,7 @@ TaskManager, is a Flutter application that allows users to effortlessly manage t
 - Daily Tasks Schedule
 - Private & Group Chat with Teammates
 - App Notifications
-- Reminders
+- App Reminders
 
 ## Prerequisites 🔧
 
